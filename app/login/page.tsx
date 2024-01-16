@@ -12,13 +12,13 @@ export default function Login() {
 		<div className="grid place-items-center">
 			<Card>
 				<CardHeader>
-					<CardTitle>Login</CardTitle>
-					<CardDescription>
+					<CardTitle className="text-3xl">Login</CardTitle>
+					<CardDescription className="text-xl">
 						To start managing tasks and workflows.
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<Button className="w-full">Sign in with Google</Button>
+					<Button className="w-full text-xl">Sign in with Google</Button>
 				</CardContent>
 			</Card>
 		</div>
