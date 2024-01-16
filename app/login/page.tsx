@@ -18,7 +18,7 @@ export default function Login() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<Button className="w-full text-xl">Sign in with Google</Button>
+					<Button className="w-full">Sign in with Google</Button>
 				</CardContent>
 			</Card>
 		</div>
