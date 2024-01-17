@@ -1,6 +1,7 @@
 "use client";
 
 import api, { List } from "@/api/api";
+import CreateList from "@/components/create-list";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -15,6 +16,7 @@ import { useEffect, useState } from "react";
 export default function Dashboard() {
 	const [lists, setLists] = useState<List[]>([]);
 	const [status, setStatus] = useState(false);
+	const [sheet, setSheet] = useState(false);
 
 	useEffect(() => {
 		api.lists().then((lists) => {
@@ -24,12 +26,13 @@ export default function Dashboard() {
 	}, []);
 
 	const handleCreate = () => {
+		return;
 		api
 			.create({
 				title: "New one",
 				tasks: [
 					{
-						id: 0,
+						id: 1,
 						name: "New one 1",
 					},
 				],
@@ -46,15 +49,16 @@ export default function Dashboard() {
 					key={list.id}
 					className="min-w-[240px] grid grid-rows-[68px_1fr_72px]"
 				>
-					<CardHeader>
+					<CardHeader className="flex-row items-center justify-between">
 						<CardTitle className="text-3xl">{list.title}</CardTitle>
+						<Button variant="destructive">Del</Button>
 					</CardHeader>
 					<CardContent className="flex flex-col gap-2">
 						{list.tasks.map((task) => (
 							<Card key={task.id}>
 								<CardContent className="p-2 flex items-center justify-between">
 									<p>{task.name}</p>
-									<Button>Del</Button>
+									<Button variant="destructive">Del</Button>
 								</CardContent>
 							</Card>
 						))}
@@ -65,13 +69,7 @@ export default function Dashboard() {
 					</CardFooter>
 				</Card>
 			))}
-			<Button
-				variant="outline"
-				className="min-w-[240px] text-3xl font-semibold h-16"
-				onClick={handleCreate}
-			>
-				Create new list...
-			</Button>
+			<CreateList onClick={handleCreate} />
 		</main>
 	);
 }

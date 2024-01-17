@@ -13,21 +13,21 @@ type NewListData = Omit<List, "id">;
 
 const lists: List[] = [
 	{
-		id: 0,
+		id: 1,
 		title: "To Do",
 		tasks: [
-			{ id: 0, name: "Buy groceries" },
-			{ id: 1, name: "Clean room" },
-			{ id: 2, name: "Fix keyboard" },
+			{ id: 1, name: "Buy groceries" },
+			{ id: 2, name: "Clean room" },
+			{ id: 3, name: "Fix keyboard" },
 		],
 	},
 	{
-		id: 1,
+		id: 2,
 		title: "Waiting",
 		tasks: [
-			{ id: 0, name: "Buy groceries" },
-			{ id: 1, name: "Clean room" },
-			{ id: 2, name: "Fix keyboard" },
+			{ id: 1, name: "Buy groceries" },
+			{ id: 2, name: "Clean room" },
+			{ id: 3, name: "Fix keyboard" },
 		],
 	},
 ];
