@@ -34,7 +34,7 @@ export default function Dashboard() {
 					},
 				],
 			})
-			.then((newList) => setLists([...newList]));
+			.then((newLists) => setLists([...newLists]));
 	};
 
 	if (!status) return <p>Loading...</p>;
