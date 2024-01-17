@@ -1,3 +1,6 @@
+"use client";
+
+import api, { List } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -7,29 +10,35 @@ import {
 	CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-
-const lists = [
-	{
-		id: 0,
-		title: "To Do",
-		tasks: [
-			{ id: 0, name: "Buy groceries" },
-			{ id: 1, name: "Clean room" },
-			{ id: 2, name: "Fix keyboard" },
-		],
-	},
-	{
-		id: 1,
-		title: "Waiting",
-		tasks: [
-			{ id: 0, name: "Buy groceries" },
-			{ id: 1, name: "Clean room" },
-			{ id: 2, name: "Fix keyboard" },
-		],
-	},
-];
+import { useEffect, useState } from "react";
 
 export default function Dashboard() {
+	const [lists, setLists] = useState<List[]>([]);
+	const [status, setStatus] = useState(false);
+
+	useEffect(() => {
+		api.lists().then((lists) => {
+			setLists(lists);
+			setStatus(true);
+		});
+	}, []);
+
+	const handleCreate = () => {
+		api
+			.create({
+				title: "New one",
+				tasks: [
+					{
+						id: 0,
+						name: "New one 1",
+					},
+				],
+			})
+			.then((newList) => setLists([...newList]));
+	};
+
+	if (!status) return <p>Loading...</p>;
+
 	return (
 		<main className="flex gap-4 overflow-x-auto">
 			{lists.map((list) => (
@@ -59,6 +68,7 @@ export default function Dashboard() {
 			<Button
 				variant="outline"
 				className="min-w-[240px] text-3xl font-semibold h-16"
+				onClick={handleCreate}
 			>
 				Create new list...
 			</Button>
