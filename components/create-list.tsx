@@ -13,18 +13,15 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { ChangeEvent, useState } from "react";
 import { Task } from "@/api/api";
+import { initialTask } from "@/lib/utils";
 
 type CreateListProps = {
-	onClick: () => void;
+	onClick: (title: string, tasks: Task[]) => void;
 };
 
 const CreateList = ({ onClick }: CreateListProps) => {
-	const [tasks, setTasks] = useState<Task[]>([
-		{
-			id: 1,
-			name: "",
-		},
-	]);
+	const [title, setTitle] = useState("");
+	const [tasks, setTasks] = useState<Task[]>([initialTask]);
 
 	const handleAdd = () => {
 		setTasks((tasks) => {
@@ -54,15 +51,12 @@ const CreateList = ({ onClick }: CreateListProps) => {
 		);
 	};
 
-	console.log(tasks);
-
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
 				<Button
 					variant="outline"
 					className="min-w-[240px] text-3xl font-semibold h-16"
-					onClick={onClick}
 				>
 					Create new list...
 				</Button>
@@ -75,12 +69,18 @@ const CreateList = ({ onClick }: CreateListProps) => {
 						done.
 					</SheetDescription>
 				</SheetHeader>
-				<div className="grid gap-4 py-4 w-full h-full overflow-y-auto">
+				<div className="grid place-content-start gap-4 py-4 w-full h-full overflow-y-auto">
 					<div className="grid grid-cols-5 items-center gap-4">
 						<Label htmlFor="title" className="text-right">
 							Title
 						</Label>
-						<Input id="title" placeholder="Title..." className="col-span-4" />
+						<Input
+							id="title"
+							placeholder="Title..."
+							className="col-span-4"
+							value={title}
+							onChange={(e) => setTitle(e.target.value)}
+						/>
 					</div>
 					{tasks.map((task, index) => (
 						<div key={task.id} className="grid grid-cols-5 items-center gap-4">
@@ -117,7 +117,16 @@ const CreateList = ({ onClick }: CreateListProps) => {
 				</div>
 				<SheetFooter className="w-full">
 					<SheetClose asChild>
-						<Button className="w-full">Create new list</Button>
+						<Button
+							className="w-full"
+							onClick={() => {
+								onClick(title, tasks);
+								setTitle("");
+								setTasks([initialTask]);
+							}}
+						>
+							Create new list
+						</Button>
 					</SheetClose>
 				</SheetFooter>
 			</SheetContent>

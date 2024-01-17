@@ -11,7 +11,7 @@ export interface List {
 
 type NewListData = Omit<List, "id">;
 
-const lists: List[] = [
+let lists: List[] = [
 	{
 		id: 1,
 		title: "To Do",
@@ -25,7 +25,22 @@ const lists: List[] = [
 		id: 2,
 		title: "Waiting",
 		tasks: [
-			{ id: 1, name: "Buy groceries" },
+			{
+				id: 1,
+				name: "Buy groceries",
+			},
+			{ id: 2, name: "Clean room" },
+			{ id: 3, name: "Fix keyboard" },
+		],
+	},
+	{
+		id: 3,
+		title: "Waitingggggggggggggggggggggggggggggggggggggggg",
+		tasks: [
+			{
+				id: 1,
+				name: "Buy groceriesssssssssssssssssssssssssssssssssssssssssssssss",
+			},
 			{ id: 2, name: "Clean room" },
 			{ id: 3, name: "Fix keyboard" },
 		],
@@ -49,6 +64,25 @@ const api = {
 		};
 
 		lists.push(newList);
+
+		return lists;
+	},
+	delete: async (id: number) => {
+		await sleep(750);
+
+		lists = lists.filter((list) => list.id !== id);
+
+		return lists;
+	},
+	update: async (updatedListData: List) => {
+		await sleep(750);
+
+		lists = lists.map((list) => {
+			if (list.id === updatedListData.id) {
+				return updatedListData;
+			}
+			return list;
+		});
 
 		return lists;
 	},
