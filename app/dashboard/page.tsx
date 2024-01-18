@@ -82,13 +82,13 @@ export default function Dashboard() {
 	if (!status) return <p>Loading...</p>;
 
 	return (
-		<main className="flex gap-4 overflow-x-auto">
+		<main className="flex gap-4 overflow-x-auto pb-4">
 			{lists.map((list) => (
 				<Card
 					key={list.id}
 					className="min-w-[240px] max-w-[240px] grid grid-rows-[68px_1fr_72px]"
 				>
-					<CardHeader className="max-w-[238px] relative flex-row items-center justify-between pr-8 space-y-0">
+					<CardHeader className="max-w-[238px] relative pr-8 space-y-0">
 						<TooltipProvider>
 							<Tooltip>
 								<TooltipTrigger asChild>
@@ -108,11 +108,11 @@ export default function Dashboard() {
 							X
 						</Button>
 					</CardHeader>
-					<CardContent className="flex flex-col gap-2">
+					<CardContent className="flex flex-col gap-2 overflow-y-auto">
 						{list.tasks.map((task) => (
-							<Card key={task.id} className="max-w-[206px] min-h-11">
-								<CardContent className="relative p-2 flex items-center justify-between pr-8">
-									<p className="w-full break-words">{task.name}</p>
+							<Card key={task.id} className="max-w-[206px]">
+								<CardContent className="relative p-2 pr-8">
+									<p className="break-words">{task.name}</p>
 									<Button
 										className="absolute h-min text-base top-0 right-0 px-1.5 py-0 rounded-tl-none rounded-br-none"
 										onClick={() => handleDeleteTask(list.id, task.id)}
@@ -129,6 +129,7 @@ export default function Dashboard() {
 							placeholder="New task..."
 							value={input}
 							onChange={(e) => setInput(e.target.value)}
+							maxLength={192}
 						/>
 						<Button onClick={() => handleAddTask(list.id)}>Add</Button>
 					</CardFooter>

@@ -21,7 +21,7 @@ export default function RootLayout({
 		<html lang="en" suppressHydrationWarning>
 			<body
 				className={cn(
-					"min-h-screen text-xl grid grid-rows-[88px_1fr] bg-background font-sans antialiased p-6 pt-0",
+					"min-h-screen max-h-screen text-xl grid grid-rows-[88px_1fr] bg-background font-sans antialiased px-6",
 					fontSans.variable
 				)}
 			>

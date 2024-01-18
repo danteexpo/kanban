@@ -101,6 +101,7 @@ const CreateList = ({ onClick }: CreateListProps) => {
 								value={title}
 								onChange={(e) => setTitle(e.target.value)}
 								className="min-h-11"
+								maxLength={64}
 							/>
 						</div>
 					</div>
@@ -120,6 +121,7 @@ const CreateList = ({ onClick }: CreateListProps) => {
 								value={task.name}
 								onChange={(e) => handleInput(task.id, e)}
 								className="col-start-2 col-span-3 min-h-11"
+								maxLength={192}
 							/>
 							<Button
 								className="absolute h-min text-base top-0 right-0 px-1.5 py-0 rounded-tl-none rounded-br-none"
