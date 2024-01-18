@@ -110,7 +110,7 @@ export default function Dashboard() {
 					</CardHeader>
 					<CardContent className="flex flex-col gap-2">
 						{list.tasks.map((task) => (
-							<Card key={task.id} className="max-w-[206px]">
+							<Card key={task.id} className="max-w-[206px] min-h-11">
 								<CardContent className="relative p-2 flex items-center justify-between pr-8">
 									<p className="w-full break-words">{task.name}</p>
 									<Button

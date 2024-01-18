@@ -51,6 +51,21 @@ const CreateList = ({ onClick }: CreateListProps) => {
 		);
 	};
 
+	const handleCreateList = () => {
+		const filteredTasks: Task[] = tasks.filter((task) => task.name !== "");
+		const orderedTasks: Task[] = filteredTasks.map((task, index) => {
+			return {
+				...task,
+				id: index + 1,
+			};
+		});
+
+		onClick(title, orderedTasks);
+
+		setTitle("");
+		setTasks([initialTask]);
+	};
+
 	return (
 		<Sheet>
 			<SheetTrigger asChild>
@@ -69,21 +84,31 @@ const CreateList = ({ onClick }: CreateListProps) => {
 						done.
 					</SheetDescription>
 				</SheetHeader>
-				<div className="grid place-content-start gap-4 py-4 w-full h-full overflow-y-auto">
-					<div className="grid grid-cols-5 items-center gap-4">
+				<div className="flex flex-col gap-4 py-4 w-full h-full overflow-y-auto overflow-x-visible">
+					<div className="grid grid-cols-4 items-center gap-4">
 						<Label htmlFor="title" className="text-right">
 							Title
 						</Label>
-						<Input
-							id="title"
-							placeholder="Title..."
-							className="col-span-4"
-							value={title}
-							onChange={(e) => setTitle(e.target.value)}
-						/>
+						<div className="relative col-span-3">
+							{title === "" && (
+								<p className="absolute -top-6 right-1 text-lg font-semibold text-[hsl(0,62.8%,30.6%)]">
+									*Add a title
+								</p>
+							)}
+							<Input
+								id="title"
+								placeholder="Title..."
+								value={title}
+								onChange={(e) => setTitle(e.target.value)}
+								className="min-h-11"
+							/>
+						</div>
 					</div>
 					{tasks.map((task, index) => (
-						<div key={task.id} className="grid grid-cols-5 items-center gap-4">
+						<div
+							key={task.id}
+							className="relative grid grid-cols-4 items-center gap-4"
+						>
 							{index === 0 && (
 								<Label htmlFor={`task-${task.id}`} className="text-right">
 									Tasks
@@ -94,20 +119,20 @@ const CreateList = ({ onClick }: CreateListProps) => {
 								placeholder={`New task...`}
 								value={task.name}
 								onChange={(e) => handleInput(task.id, e)}
-								className="col-start-2 col-span-3"
+								className="col-start-2 col-span-3 min-h-11"
 							/>
 							<Button
-								variant="destructive"
+								className="absolute h-min text-base top-0 right-0 px-1.5 py-0 rounded-tl-none rounded-br-none"
 								onClick={() => handleDelete(task.id)}
 								disabled={tasks.length < 2}
 							>
-								Del
+								X
 							</Button>
 						</div>
 					))}
-					<div className="grid grid-cols-5 items-center gap-4">
+					<div className="grid grid-cols-4 items-center gap-4">
 						<Button
-							className="w-full col-start-2 col-span-4"
+							className="w-full col-start-2 col-span-3"
 							onClick={handleAdd}
 							disabled={tasks.length > 9}
 						>
@@ -119,11 +144,8 @@ const CreateList = ({ onClick }: CreateListProps) => {
 					<SheetClose asChild>
 						<Button
 							className="w-full"
-							onClick={() => {
-								onClick(title, tasks);
-								setTitle("");
-								setTasks([initialTask]);
-							}}
+							onClick={handleCreateList}
+							disabled={title === ""}
 						>
 							Create new list
 						</Button>
