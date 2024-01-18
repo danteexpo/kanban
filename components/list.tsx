@@ -32,7 +32,7 @@ const List = ({
 	const [input, setInput] = useState("");
 
 	return (
-		<Card className="min-w-[240px] max-w-[240px] grid grid-rows-[68px_1fr_72px]">
+		<Card className="min-w-[240px] max-w-[240px] grid grid-rows-[68px_1fr_72px] h-min max-h-full">
 			<CardHeader className="max-w-[238px] relative pr-8 space-y-0">
 				<TooltipProvider>
 					<Tooltip>
