@@ -76,7 +76,7 @@ export default function Dashboard() {
 					handleAddTask={handleAddTask}
 				/>
 			))}
-			<CreateList onClick={handleCreateList} />
+			<CreateList handleCreateList={handleCreateList} />
 		</main>
 	);
 }

@@ -16,10 +16,10 @@ import { Task } from "@/api/api";
 import { initialTask } from "@/lib/utils";
 
 type CreateListProps = {
-	onClick: (title: string, tasks: Task[]) => void;
+	handleCreateList: (title: string, tasks: Task[]) => void;
 };
 
-const CreateList = ({ onClick }: CreateListProps) => {
+const CreateList = ({ handleCreateList }: CreateListProps) => {
 	const [title, setTitle] = useState("");
 	const [tasks, setTasks] = useState<Task[]>([initialTask]);
 
@@ -51,7 +51,7 @@ const CreateList = ({ onClick }: CreateListProps) => {
 		);
 	};
 
-	const handleCreateList = () => {
+	const onClick = () => {
 		const filteredTasks: Task[] = tasks.filter((task) => task.name !== "");
 		const orderedTasks: Task[] = filteredTasks.map((task, index) => {
 			return {
@@ -60,7 +60,7 @@ const CreateList = ({ onClick }: CreateListProps) => {
 			};
 		});
 
-		onClick(title, orderedTasks);
+		handleCreateList(title, orderedTasks);
 
 		setTitle("");
 		setTasks([initialTask]);
@@ -146,7 +146,7 @@ const CreateList = ({ onClick }: CreateListProps) => {
 					<SheetClose asChild>
 						<Button
 							className="w-full"
-							onClick={handleCreateList}
+							onClick={onClick}
 							disabled={title === ""}
 						>
 							Create new list
