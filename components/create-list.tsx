@@ -84,7 +84,7 @@ const CreateList = ({ onClick }: CreateListProps) => {
 						done.
 					</SheetDescription>
 				</SheetHeader>
-				<div className="flex flex-col gap-4 py-4 w-full h-full overflow-y-auto overflow-x-visible">
+				<div className="flex flex-col gap-4 py-4 w-full h-full overflow-y-auto pr-4">
 					<div className="grid grid-cols-4 items-center gap-4">
 						<Label htmlFor="title" className="text-right">
 							Title
