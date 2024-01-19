@@ -8,12 +8,12 @@ import { useEffect, useState } from "react";
 
 export default function Dashboard() {
 	const [lists, setLists] = useState<List[]>([]);
-	const [status, setStatus] = useState(false);
+	const [initialLoad, setInitialLoad] = useState(false);
 
 	useEffect(() => {
 		api.lists().then((lists) => {
 			setLists(lists);
-			setStatus(true);
+			setInitialLoad(true);
 		});
 	}, []);
 
@@ -66,7 +66,7 @@ export default function Dashboard() {
 
 	return (
 		<main className="flex gap-4 overflow-x-auto pb-4">
-			{!status ? (
+			{!initialLoad ? (
 				<>
 					<SkeletonList tasks={8} />
 					<SkeletonList tasks={6} />
