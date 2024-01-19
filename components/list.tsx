@@ -75,6 +75,7 @@ const List = ({
 					value={input}
 					onChange={(e) => setInput(e.target.value)}
 					maxLength={192}
+					disabled={list.tasks.length > 9}
 				/>
 				<Button
 					onClick={() => {
