@@ -5,6 +5,12 @@ import CreateList from "@/components/create-list";
 import List from "@/components/list";
 import SkeletonList from "@/components/skeleton-list";
 import { useEffect, useState } from "react";
+import {
+	DragDropContext,
+	Droppable,
+	Draggable,
+	DropResult,
+} from "react-beautiful-dnd";
 
 export default function Dashboard() {
 	const [lists, setLists] = useState<ListType[]>([]);
@@ -64,31 +70,81 @@ export default function Dashboard() {
 		});
 	};
 
+	const handleDragDrop = (result: DropResult) => {
+		const { source, destination, type } = result;
+
+		if (!destination) return;
+
+		if (
+			source.droppableId === destination.droppableId &&
+			source.index === destination.index
+		)
+			return;
+
+		if (type === "group") {
+			const orderedLists = [...lists];
+
+			const [removedList] = orderedLists.splice(source.index, 1);
+
+			orderedLists.splice(destination.index, 0, removedList);
+
+			api.updateAll(orderedLists).then((newLists) => {
+				setLists(orderedLists);
+			});
+		}
+	};
+
 	return (
-		<main className="flex gap-4 overflow-x-auto pb-4">
-			{!initialLoad ? (
-				<>
-					<SkeletonList tasks={8} />
-					<SkeletonList tasks={6} />
-					<SkeletonList tasks={4} />
-				</>
-			) : (
-				<>
-					{lists.map((list) => (
-						<List
-							key={list.id}
-							list={list}
-							handleDeleteList={handleDeleteList}
-							handleDeleteTask={handleDeleteTask}
-							handleAddTask={handleAddTask}
-						/>
-					))}
-					<CreateList
-						handleCreateList={handleCreateList}
-						listsLength={lists.length}
-					/>
-				</>
-			)}
-		</main>
+		<DragDropContext onDragEnd={handleDragDrop}>
+			<Droppable droppableId="ROOT" type="group" direction="horizontal">
+				{(provided) => (
+					<>
+						<main
+							className="flex gap-4 overflow-x-auto pb-4"
+							ref={provided.innerRef}
+							{...provided.droppableProps}
+						>
+							{!initialLoad ? (
+								<>
+									<SkeletonList tasks={8} />
+									<SkeletonList tasks={6} />
+									<SkeletonList tasks={4} />
+								</>
+							) : (
+								<>
+									{lists.map((list, index) => (
+										<Draggable
+											draggableId={`${list.id}`}
+											index={index}
+											key={list.id}
+										>
+											{(provided) => (
+												<div
+													ref={provided.innerRef}
+													{...provided.draggableProps}
+													{...provided.dragHandleProps}
+												>
+													<List
+														list={list}
+														handleDeleteList={handleDeleteList}
+														handleDeleteTask={handleDeleteTask}
+														handleAddTask={handleAddTask}
+													/>
+												</div>
+											)}
+										</Draggable>
+									))}
+									{provided.placeholder}
+									<CreateList
+										handleCreateList={handleCreateList}
+										listsLength={lists.length}
+									/>
+								</>
+							)}
+						</main>
+					</>
+				)}
+			</Droppable>
+		</DragDropContext>
 	);
 }

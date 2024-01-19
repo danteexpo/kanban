@@ -90,6 +90,13 @@ const api = {
 
 		return lists;
 	},
+	updateAll: async (updatedListsData: ListType[]) => {
+		await sleep(750);
+
+		lists = updatedListsData;
+
+		return lists;
+	},
 };
 
 export default api;
