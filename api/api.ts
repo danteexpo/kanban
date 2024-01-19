@@ -1,17 +1,17 @@
-export interface Task {
+export interface TaskType {
 	id: number;
 	name: string;
 }
 
-export interface List {
+export interface ListType {
 	id: number;
 	title: string;
-	tasks: Task[];
+	tasks: TaskType[];
 }
 
-type NewListData = Omit<List, "id">;
+type NewListData = Omit<ListType, "id">;
 
-let lists: List[] = [
+let lists: ListType[] = [
 	{
 		id: 1,
 		title: "To Do",
@@ -54,15 +54,15 @@ let lists: List[] = [
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const api = {
-	lists: async (): Promise<List[]> => {
+	lists: async (): Promise<ListType[]> => {
 		await sleep(750);
 
 		return lists;
 	},
-	create: async (newListData: NewListData): Promise<List[]> => {
+	create: async (newListData: NewListData): Promise<ListType[]> => {
 		await sleep(750);
 
-		const newList: List = {
+		const newList: ListType = {
 			id: Math.max(...lists.map((l) => l.id)) + 1,
 			...newListData,
 		};
@@ -78,7 +78,7 @@ const api = {
 
 		return lists;
 	},
-	update: async (updatedListData: List) => {
+	update: async (updatedListData: ListType) => {
 		await sleep(750);
 
 		lists = lists.map((list) => {

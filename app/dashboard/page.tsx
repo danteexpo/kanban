@@ -1,13 +1,13 @@
 "use client";
 
-import api, { Task } from "@/api/api";
+import api, { ListType, TaskType } from "@/api/api";
 import CreateList from "@/components/create-list";
 import List from "@/components/list";
 import SkeletonList from "@/components/skeleton-list";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-	const [lists, setLists] = useState<List[]>([]);
+	const [lists, setLists] = useState<ListType[]>([]);
 	const [initialLoad, setInitialLoad] = useState(false);
 
 	useEffect(() => {
@@ -17,7 +17,7 @@ export default function Dashboard() {
 		});
 	}, []);
 
-	const handleCreateList = (title: string, tasks: Task[]) => {
+	const handleCreateList = (title: string, tasks: TaskType[]) => {
 		api
 			.create({
 				title: title,

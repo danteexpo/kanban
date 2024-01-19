@@ -12,17 +12,17 @@ import { Label } from "@/components/ui/label";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { ChangeEvent, useState } from "react";
-import { Task } from "@/api/api";
+import { TaskType } from "@/api/api";
 import { initialTask } from "@/lib/utils";
 
 type CreateListProps = {
-	handleCreateList: (title: string, tasks: Task[]) => void;
+	handleCreateList: (title: string, tasks: TaskType[]) => void;
 	listsLength: number;
 };
 
 const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
 	const [title, setTitle] = useState("");
-	const [tasks, setTasks] = useState<Task[]>([initialTask]);
+	const [tasks, setTasks] = useState<TaskType[]>([initialTask]);
 
 	const handleAdd = () => {
 		setTasks((tasks) => {
@@ -53,8 +53,8 @@ const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
 	};
 
 	const onClick = () => {
-		const filteredTasks: Task[] = tasks.filter((task) => task.name !== "");
-		const orderedTasks: Task[] = filteredTasks.map((task, index) => {
+		const filteredTasks: TaskType[] = tasks.filter((task) => task.name !== "");
+		const orderedTasks: TaskType[] = filteredTasks.map((task, index) => {
 			return {
 				...task,
 				id: index + 1,

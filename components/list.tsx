@@ -1,4 +1,4 @@
-import { List } from "@/api/api";
+import { ListType } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -17,7 +17,7 @@ import {
 import { useState } from "react";
 
 type ListProps = {
-	list: List;
+	list: ListType;
 	handleDeleteList: (listId: number) => void;
 	handleDeleteTask: (listId: number, taskId: number) => void;
 	handleAddTask: (listId: number, input: string) => void;
