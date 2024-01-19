@@ -3,6 +3,7 @@
 import api, { Task } from "@/api/api";
 import CreateList from "@/components/create-list";
 import List from "@/components/list";
+import SkeletonList from "@/components/skeleton-list";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
@@ -63,20 +64,28 @@ export default function Dashboard() {
 		});
 	};
 
-	if (!status) return <p>Loading...</p>;
-
 	return (
 		<main className="flex gap-4 overflow-x-auto pb-4">
-			{lists.map((list) => (
-				<List
-					key={list.id}
-					list={list}
-					handleDeleteList={handleDeleteList}
-					handleDeleteTask={handleDeleteTask}
-					handleAddTask={handleAddTask}
-				/>
-			))}
-			<CreateList handleCreateList={handleCreateList} />
+			{!status ? (
+				<>
+					<SkeletonList tasks={8} />
+					<SkeletonList tasks={6} />
+					<SkeletonList tasks={4} />
+				</>
+			) : (
+				<>
+					{lists.map((list) => (
+						<List
+							key={list.id}
+							list={list}
+							handleDeleteList={handleDeleteList}
+							handleDeleteTask={handleDeleteTask}
+							handleAddTask={handleAddTask}
+						/>
+					))}
+					<CreateList handleCreateList={handleCreateList} />
+				</>
+			)}
 		</main>
 	);
 }
