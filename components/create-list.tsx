@@ -17,9 +17,10 @@ import { initialTask } from "@/lib/utils";
 
 type CreateListProps = {
 	handleCreateList: (title: string, tasks: Task[]) => void;
+	listsLength: number;
 };
 
-const CreateList = ({ handleCreateList }: CreateListProps) => {
+const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
 	const [title, setTitle] = useState("");
 	const [tasks, setTasks] = useState<Task[]>([initialTask]);
 
@@ -72,6 +73,7 @@ const CreateList = ({ handleCreateList }: CreateListProps) => {
 				<Button
 					variant="outline"
 					className="min-w-[240px] text-3xl font-semibold h-16"
+					disabled={listsLength > 9}
 				>
 					Create new list...
 				</Button>

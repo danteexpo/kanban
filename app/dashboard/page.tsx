@@ -83,7 +83,10 @@ export default function Dashboard() {
 							handleAddTask={handleAddTask}
 						/>
 					))}
-					<CreateList handleCreateList={handleCreateList} />
+					<CreateList
+						handleCreateList={handleCreateList}
+						listsLength={lists.length}
+					/>
 				</>
 			)}
 		</main>
