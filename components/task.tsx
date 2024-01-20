@@ -22,11 +22,11 @@ const Task = ({
 	editTaskId,
 	setEditTaskId,
 }: TaskProps) => {
-	const [input, setInput] = useState(task.name);
+	const [name, setName] = useState(task.name);
 
 	const onClick = () => {
 		setEditTaskId(null);
-		handleUpdateTask(listId, task.id, input);
+		handleUpdateTask(listId, task.id, name);
 	};
 
 	return (
@@ -36,8 +36,8 @@ const Task = ({
 					<>
 						<Input
 							className="min-h-11 pr-16"
-							value={input}
-							onChange={(e) => setInput(e.target.value)}
+							value={name}
+							onChange={(e) => setName(e.target.value)}
 							autoFocus
 							maxLength={192}
 						/>
