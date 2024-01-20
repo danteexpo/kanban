@@ -10,7 +10,7 @@ import {
 	Droppable,
 	Draggable,
 	DropResult,
-} from "react-beautiful-dnd";
+} from "@hello-pangea/dnd";
 
 export default function Dashboard() {
 	const [lists, setLists] = useState<ListType[]>([]);
@@ -88,15 +88,50 @@ export default function Dashboard() {
 
 			orderedLists.splice(destination.index, 0, removedList);
 
-			api.updateAll(orderedLists).then((newLists) => {
-				setLists(orderedLists);
-			});
+			setLists(orderedLists);
+		} else {
+			const listSourceIndex = lists.findIndex(
+				(list) => `droppable-list-${list.id}` === source.droppableId
+			);
+
+			const listDestinationIndex = lists.findIndex(
+				(list) => `droppable-list-${list.id}` === destination.droppableId
+			);
+
+			const newSourceTasks = [...lists[listSourceIndex].tasks];
+
+			const newDestinationTasks =
+				source.droppableId !== destination.droppableId
+					? [...lists[listDestinationIndex].tasks]
+					: newSourceTasks;
+
+			const [deletedTask] = newSourceTasks.splice(source.index, 1);
+
+			newDestinationTasks.splice(destination.index, 0, deletedTask);
+
+			const newLists = [...lists];
+
+			newLists[listSourceIndex] = {
+				...lists[listSourceIndex],
+				tasks: newSourceTasks,
+			};
+
+			newLists[listDestinationIndex] = {
+				...lists[listDestinationIndex],
+				tasks: newDestinationTasks,
+			};
+
+			setLists(newLists);
 		}
 	};
 
 	return (
 		<DragDropContext onDragEnd={handleDragDrop}>
-			<Droppable droppableId="ROOT" type="group" direction="horizontal">
+			<Droppable
+				droppableId="droppable-lists"
+				type="group"
+				direction="horizontal"
+			>
 				{(provided) => (
 					<>
 						<main
@@ -114,9 +149,9 @@ export default function Dashboard() {
 								<>
 									{lists.map((list, index) => (
 										<Draggable
-											draggableId={`${list.id}`}
+											draggableId={`draggable-list-${list.id}`}
 											index={index}
-											key={list.id}
+											key={`draggable-list-${list.id}`}
 										>
 											{(provided) => (
 												<div

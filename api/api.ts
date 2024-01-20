@@ -26,11 +26,11 @@ let lists: ListType[] = [
 		title: "Waiting",
 		tasks: [
 			{
-				id: 1,
+				id: 4,
 				name: "Buy groceries",
 			},
-			{ id: 2, name: "Clean room" },
-			{ id: 3, name: "Fix keyboard" },
+			{ id: 5, name: "Clean room" },
+			{ id: 6, name: "Fix keyboard" },
 		],
 	},
 	{
@@ -38,13 +38,13 @@ let lists: ListType[] = [
 		title: "Waitingggggggggggggggggggggggggggggggggggggggg",
 		tasks: [
 			{
-				id: 1,
+				id: 7,
 				name: "Buy groceriesssssssssssssssssssssssssssssssssssssssssssssss",
 			},
-			{ id: 2, name: "Clean room" },
-			{ id: 3, name: "Fix keyboard" },
+			{ id: 8, name: "Clean room" },
+			{ id: 9, name: "Fix keyboard" },
 			{
-				id: 4,
+				id: 10,
 				name: "Daaaaaaaa aaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaaaaaa sssssssssssssss aaaaaaaaaas sssssssssssssssaaaaaaaaaaaaa aaaaaaaaaaaaa aaa dsfa fsdafsafsa fdsafs adfsad fsad fdas fasd fsadfsadf asdf sadfsdafasfsadfasfsdaf asfas fsafsafsdfsafasfsaf fas sdasssssssssssssssssssf f dsaf sdaf sadfsadfsdaf sad fsadfsadfsadfsdafasdfsdafsadf sda df f sd fsadf sda fasd fasd fds fsda fsadf sda f saf sadf sadasdfsdafasd",
 			},
 		],
@@ -87,13 +87,6 @@ const api = {
 			}
 			return list;
 		});
-
-		return lists;
-	},
-	updateAll: async (updatedListsData: ListType[]) => {
-		await sleep(750);
-
-		lists = updatedListsData;
 
 		return lists;
 	},
