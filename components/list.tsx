@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
+import Task from "./task";
 
 type ListProps = {
 	list: ListType;
@@ -74,21 +75,17 @@ const List = ({
 											{...provided.draggableProps}
 											{...provided.dragHandleProps}
 										>
-											<Card className="max-w-[206px]">
-												<CardContent className="relative p-2 pr-8">
-													<p className="break-words">{task.name}</p>
-													<Button
-														className="absolute h-min text-base top-0 right-0 px-1.5 py-0 rounded-tl-none rounded-br-none"
-														onClick={() => handleDeleteTask(list.id, task.id)}
-													>
-														X
-													</Button>
-												</CardContent>
-											</Card>
+											<Task
+												key={task.id}
+												task={task}
+												listId={list.id}
+												handleDeleteTask={handleDeleteTask}
+											/>
 										</div>
 									)}
 								</Draggable>
 							))}
+							{provided.placeholder}
 						</CardContent>
 						<CardFooter className="flex gap-2">
 							<Input
@@ -110,8 +107,6 @@ const List = ({
 							</Button>
 						</CardFooter>
 					</Card>
-
-					{provided.placeholder}
 				</div>
 			)}
 		</Droppable>

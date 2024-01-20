@@ -135,7 +135,7 @@ export default function Dashboard() {
 				{(provided) => (
 					<>
 						<main
-							className="flex gap-4 overflow-x-auto pb-4"
+							className="flex gap-4 overflow-x-auto pt-1 px-1 pb-4"
 							ref={provided.innerRef}
 							{...provided.droppableProps}
 						>
