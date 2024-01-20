@@ -15,8 +15,8 @@ import {
 export default function Dashboard() {
 	const [lists, setLists] = useState<ListType[]>([]);
 	const [initialLoad, setInitialLoad] = useState(false);
+	const [editListId, setEditListId] = useState<number | null>(null);
 	const [editTaskId, setEditTaskId] = useState<number | null>(null);
-	console.log(editTaskId);
 
 	useEffect(() => {
 		api.lists().then((lists) => {
@@ -24,6 +24,10 @@ export default function Dashboard() {
 			setInitialLoad(true);
 		});
 	}, []);
+
+	const handleDeleteList = (listId: number) => {
+		api.delete(listId).then((newLists) => setLists([...newLists]));
+	};
 
 	const handleCreateList = (title: string, tasks: TaskType[]) => {
 		api
@@ -34,8 +38,17 @@ export default function Dashboard() {
 			.then((newLists) => setLists([...newLists]));
 	};
 
-	const handleDeleteList = (listId: number) => {
-		api.delete(listId).then((newLists) => setLists([...newLists]));
+	const handleUpdateList = (listId: number, title: string) => {
+		let list = lists.find((list) => list.id === listId);
+
+		if (!list) return;
+
+		list = {
+			...list,
+			title: title,
+		};
+
+		api.update(list).then((newLists) => setLists([...newLists]));
 	};
 
 	const handleDeleteTask = (listId: number, taskId: number) => {
@@ -189,9 +202,12 @@ export default function Dashboard() {
 													<List
 														list={list}
 														handleDeleteList={handleDeleteList}
+														handleUpdateList={handleUpdateList}
 														handleDeleteTask={handleDeleteTask}
 														handleAddTask={handleAddTask}
 														handleUpdateTask={handleUpdateTask}
+														editListId={editListId}
+														setEditListId={setEditListId}
 														editTaskId={editTaskId}
 														setEditTaskId={setEditTaskId}
 													/>
