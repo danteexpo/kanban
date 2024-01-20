@@ -15,6 +15,8 @@ import {
 export default function Dashboard() {
 	const [lists, setLists] = useState<ListType[]>([]);
 	const [initialLoad, setInitialLoad] = useState(false);
+	const [editTaskId, setEditTaskId] = useState<number | null>(null);
+	console.log(editTaskId);
 
 	useEffect(() => {
 		api.lists().then((lists) => {
@@ -68,6 +70,31 @@ export default function Dashboard() {
 		api.update(list).then((newLists) => {
 			setLists([...newLists]);
 		});
+	};
+
+	const handleUpdateTask = (
+		listId: number,
+		taskId: number,
+		taskName: string
+	) => {
+		let list = lists.find((list) => list.id === listId);
+
+		if (!list) return;
+
+		list = {
+			...list,
+			tasks: list.tasks.map((task) => {
+				if (task.id === taskId) {
+					return {
+						...task,
+						name: taskName,
+					};
+				}
+				return task;
+			}),
+		};
+
+		api.update(list).then((newLists) => setLists([...newLists]));
 	};
 
 	const handleDragDrop = (result: DropResult) => {
@@ -164,6 +191,9 @@ export default function Dashboard() {
 														handleDeleteList={handleDeleteList}
 														handleDeleteTask={handleDeleteTask}
 														handleAddTask={handleAddTask}
+														handleUpdateTask={handleUpdateTask}
+														editTaskId={editTaskId}
+														setEditTaskId={setEditTaskId}
 													/>
 												</div>
 											)}

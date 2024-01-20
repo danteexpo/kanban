@@ -14,6 +14,7 @@ import { Input } from "./ui/input";
 import { ChangeEvent, useState } from "react";
 import { TaskType } from "@/api/api";
 import { initialTask } from "@/lib/utils";
+import Image from "next/image";
 
 type CreateListProps = {
 	handleCreateList: (title: string, tasks: TaskType[]) => void;
@@ -126,11 +127,17 @@ const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
 								maxLength={192}
 							/>
 							<Button
-								className="absolute h-min text-base top-0 right-0 px-1.5 py-0 rounded-tl-none rounded-br-none"
+								className="absolute h-min text-base top-0 right-0 p-1 rounded-tl-none rounded-br-none"
 								onClick={() => handleDelete(task.id)}
 								disabled={tasks.length < 2}
 							>
-								X
+								<Image
+									src="/static/trash.svg"
+									alt="delete task"
+									width={16}
+									height={16}
+									className="invert dark:invert-0"
+								/>
 							</Button>
 						</div>
 					))}

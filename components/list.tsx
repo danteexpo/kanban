@@ -14,15 +14,19 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
+import Image from "next/image";
 
 type ListProps = {
 	list: ListType;
 	handleDeleteList: (listId: number) => void;
 	handleDeleteTask: (listId: number, taskId: number) => void;
 	handleAddTask: (listId: number, input: string) => void;
+	handleUpdateTask: (listId: number, taskId: number, taskName: string) => void;
+	editTaskId: number | null;
+	setEditTaskId: Dispatch<SetStateAction<number | null>>;
 };
 
 const List = ({
@@ -30,6 +34,9 @@ const List = ({
 	handleDeleteList,
 	handleDeleteTask,
 	handleAddTask,
+	handleUpdateTask,
+	editTaskId,
+	setEditTaskId,
 }: ListProps) => {
 	const [input, setInput] = useState("");
 
@@ -56,10 +63,16 @@ const List = ({
 								</Tooltip>
 							</TooltipProvider>
 							<Button
-								className="absolute h-min text-2xl top-0 right-0 px-2 py-0 rounded-tl-none rounded-br-none"
+								className="absolute h-min text-2xl top-0 right-0 p-1 rounded-tl-none rounded-br-none"
 								onClick={() => handleDeleteList(list.id)}
 							>
-								X
+								<Image
+									src="/static/trash.svg"
+									alt="delete list"
+									width={24}
+									height={24}
+									className="invert dark:invert-0"
+								/>
 							</Button>
 						</CardHeader>
 						<CardContent className="flex flex-col gap-2 overflow-y-auto">
@@ -80,6 +93,9 @@ const List = ({
 												task={task}
 												listId={list.id}
 												handleDeleteTask={handleDeleteTask}
+												handleUpdateTask={handleUpdateTask}
+												editTaskId={editTaskId}
+												setEditTaskId={setEditTaskId}
 											/>
 										</div>
 									)}
