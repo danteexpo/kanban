@@ -76,6 +76,8 @@ export default function Dashboard() {
 	const handleAddTask = (listId: number, input: string) => {
 		let list = lists.find((list) => list.id === listId);
 
+		if (!minimalId) return;
+
 		if (!list) return;
 
 		list = {
@@ -83,7 +85,7 @@ export default function Dashboard() {
 			tasks: [
 				...list.tasks,
 				{
-					id: Math.max(...list.tasks.map((l) => l.id)) + 1,
+					id: minimalId,
 					name: input,
 				},
 			],
@@ -91,6 +93,7 @@ export default function Dashboard() {
 
 		api.update(list).then((newLists) => {
 			setLists([...newLists]);
+			setMinimalId(minimalId + 1);
 		});
 	};
 
