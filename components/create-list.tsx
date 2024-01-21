@@ -19,9 +19,14 @@ import Image from "next/image";
 type CreateListProps = {
 	handleCreateList: (title: string, tasks: TaskType[]) => void;
 	listsLength: number;
+	minimalId: number;
 };
 
-const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
+const CreateList = ({
+	handleCreateList,
+	listsLength,
+	minimalId,
+}: CreateListProps) => {
 	const [title, setTitle] = useState("");
 	const [tasks, setTasks] = useState<TaskType[]>([initialTask]);
 
@@ -31,6 +36,7 @@ const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
 				id: Math.max(...tasks.map((t) => t.id)) + 1,
 				name: "",
 			};
+
 			return [...tasks, newTask];
 		});
 	};
@@ -58,9 +64,11 @@ const CreateList = ({ handleCreateList, listsLength }: CreateListProps) => {
 		const orderedTasks: TaskType[] = filteredTasks.map((task, index) => {
 			return {
 				...task,
-				id: index + 1,
+				id: minimalId + index,
 			};
 		});
+
+		console.log(orderedTasks);
 
 		handleCreateList(title, orderedTasks);
 

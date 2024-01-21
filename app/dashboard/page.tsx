@@ -17,6 +17,7 @@ export default function Dashboard() {
 	const [initialLoad, setInitialLoad] = useState(false);
 	const [editListId, setEditListId] = useState<number | null>(null);
 	const [editTaskId, setEditTaskId] = useState<number | null>(null);
+	const [minimalId, setMinimalId] = useState<number | null>(null);
 
 	useEffect(() => {
 		api.lists().then((lists) => {
@@ -24,6 +25,14 @@ export default function Dashboard() {
 			setInitialLoad(true);
 		});
 	}, []);
+
+	useEffect(() => {
+		const largestId = Math.max(
+			...lists.flatMap((list) => list.tasks.map((task) => task.id))
+		);
+
+		setMinimalId(largestId + 1);
+	}, [lists]);
 
 	const handleDeleteList = (listId: number) => {
 		api.delete(listId).then((newLists) => setLists([...newLists]));
@@ -107,7 +116,10 @@ export default function Dashboard() {
 			}),
 		};
 
-		api.update(list).then((newLists) => setLists([...newLists]));
+		api.update(list).then((newLists) => {
+			console.log(newLists);
+			setLists([...newLists]);
+		});
 	};
 
 	const handleDragDrop = (result: DropResult) => {
@@ -216,10 +228,13 @@ export default function Dashboard() {
 										</Draggable>
 									))}
 									{provided.placeholder}
-									<CreateList
-										handleCreateList={handleCreateList}
-										listsLength={lists.length}
-									/>
+									{minimalId !== null && (
+										<CreateList
+											handleCreateList={handleCreateList}
+											listsLength={lists.length}
+											minimalId={minimalId}
+										/>
+									)}
 								</>
 							)}
 						</main>
