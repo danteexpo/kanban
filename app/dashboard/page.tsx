@@ -19,6 +19,8 @@ export default function Dashboard() {
 	const [editTaskId, setEditTaskId] = useState<number | null>(null);
 	const [minimalId, setMinimalId] = useState<number | null>(null);
 
+	console.log(lists);
+
 	useEffect(() => {
 		api.lists().then((lists) => {
 			setLists(lists);
@@ -116,9 +118,8 @@ export default function Dashboard() {
 			}),
 		};
 
-		api.update(list).then((newLists) => {
-			console.log(newLists);
-			setLists([...newLists]);
+		api.update(list).then((updatedLists) => {
+			setLists([...updatedLists]);
 		});
 	};
 
@@ -140,7 +141,9 @@ export default function Dashboard() {
 
 			orderedLists.splice(destination.index, 0, removedList);
 
-			setLists(orderedLists);
+			api
+				.updateAll(orderedLists)
+				.then((updatedLists) => setLists([...updatedLists]));
 		} else {
 			const listSourceIndex = lists.findIndex(
 				(list) => `droppable-list-${list.id}` === source.droppableId
@@ -173,7 +176,9 @@ export default function Dashboard() {
 				tasks: newDestinationTasks,
 			};
 
-			setLists(newLists);
+			api
+				.updateAll(newLists)
+				.then((updatedLists) => setLists([...updatedLists]));
 		}
 	};
 

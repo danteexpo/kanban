@@ -68,8 +68,6 @@ const CreateList = ({
 			};
 		});
 
-		console.log(orderedTasks);
-
 		handleCreateList(title, orderedTasks);
 
 		setTitle("");
