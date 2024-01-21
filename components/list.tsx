@@ -12,12 +12,12 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
 import Image from "next/image";
+import DeleteButton from "./delete-button";
 
 type ListProps = {
 	list: ListType;
-	handleDeleteList: (listId: number) => void;
+	handleDelete: (listId: number, taskId?: number) => void;
 	handleUpdateList: (listId: number, title: string) => void;
-	handleDeleteTask: (listId: number, taskId: number) => void;
 	handleAddTask: (listId: number, input: string) => void;
 	handleUpdateTask: (listId: number, taskId: number, taskName: string) => void;
 	editListId: number | null;
@@ -28,9 +28,8 @@ type ListProps = {
 
 const List = ({
 	list,
-	handleDeleteList,
+	handleDelete,
 	handleUpdateList,
-	handleDeleteTask,
 	handleAddTask,
 	handleUpdateTask,
 	editListId,
@@ -97,18 +96,10 @@ const List = ({
 									</Button>
 								</>
 							)}
-							<Button
-								className="absolute h-min text-2xl top-0 right-0 p-1 rounded-tl-none rounded-br-none"
-								onClick={() => handleDeleteList(list.id)}
-							>
-								<Image
-									src="/static/trash.svg"
-									alt="delete list"
-									width={24}
-									height={24}
-									className="invert dark:invert-0"
-								/>
-							</Button>
+							<DeleteButton
+								onDelete={() => handleDelete(list.id)}
+								isSmall={false}
+							/>
 						</CardHeader>
 						<CardContent className="flex flex-col gap-2 overflow-y-auto">
 							{list.tasks.map((task, index) => (
@@ -127,7 +118,7 @@ const List = ({
 												key={task.id}
 												task={task}
 												listId={list.id}
-												handleDeleteTask={handleDeleteTask}
+												handleDelete={handleDelete}
 												handleUpdateTask={handleUpdateTask}
 												editTaskId={editTaskId}
 												setEditTaskId={setEditTaskId}

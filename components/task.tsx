@@ -4,11 +4,12 @@ import { Button } from "@/components/ui/button";
 import { TaskType } from "@/api/api";
 import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
+import DeleteButton from "./delete-button";
 
 type TaskProps = {
 	task: TaskType;
 	listId: number;
-	handleDeleteTask: (listId: number, taskId: number) => void;
+	handleDelete: (listId: number, taskId?: number) => void;
 	handleUpdateTask: (listId: number, taskId: number, taskName: string) => void;
 	editTaskId: number | null;
 	setEditTaskId: Dispatch<SetStateAction<number | null>>;
@@ -17,7 +18,7 @@ type TaskProps = {
 const Task = ({
 	task,
 	listId,
-	handleDeleteTask,
+	handleDelete,
 	handleUpdateTask,
 	editTaskId,
 	setEditTaskId,
@@ -71,18 +72,7 @@ const Task = ({
 						</Button>
 					</>
 				)}
-				<Button
-					className="absolute h-min text-base top-0 right-0 p-1 rounded-tl-none rounded-br-none"
-					onClick={() => handleDeleteTask(listId, task.id)}
-				>
-					<Image
-						src="/static/trash.svg"
-						alt="delete task"
-						width={16}
-						height={16}
-						className="invert dark:invert-0"
-					/>
-				</Button>
+				<DeleteButton onDelete={() => handleDelete(listId, task.id)} isSmall />
 			</CardContent>
 		</Card>
 	);
