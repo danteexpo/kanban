@@ -14,7 +14,7 @@ import { Input } from "./ui/input";
 import { ChangeEvent, useState } from "react";
 import { TaskType } from "@/api/api";
 import { initialTask } from "@/lib/utils";
-import DeleteButton from "./delete-button";
+import ActionButton from "./action-button";
 
 type CreateListProps = {
 	handleCreateList: (title: string, tasks: TaskType[]) => void;
@@ -45,7 +45,7 @@ const CreateList = ({
 		setTasks((tasks) => tasks.filter((task) => task.id !== id));
 	};
 
-	const handleInput = (id: number, e: ChangeEvent<HTMLInputElement>) => {
+	const handleTasks = (id: number, e: ChangeEvent<HTMLInputElement>) => {
 		setTasks((tasks) =>
 			tasks.map((task) => {
 				if (task.id === id) {
@@ -128,13 +128,13 @@ const CreateList = ({
 								id={`task-${task.id}`}
 								placeholder={`New task...`}
 								value={task.name}
-								onChange={(e) => handleInput(task.id, e)}
+								onChange={(e) => handleTasks(task.id, e)}
 								className="col-start-2 col-span-3 min-h-11"
 								maxLength={192}
 							/>
-							<DeleteButton
-								onDelete={() => handleDelete(task.id)}
-								isSmall
+							<ActionButton
+								type="delete"
+								onClick={() => handleDelete(task.id)}
 								isDisabled={tasks.length < 2}
 							/>
 						</div>

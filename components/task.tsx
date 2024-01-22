@@ -1,10 +1,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { TaskType } from "@/api/api";
 import { Dispatch, SetStateAction, useState } from "react";
-import Image from "next/image";
-import DeleteButton from "./delete-button";
+import ActionButton from "./action-button";
 
 type TaskProps = {
 	task: TaskType;
@@ -31,8 +29,8 @@ const Task = ({
 	};
 
 	return (
-		<Card className="group max-w-[206px]">
-			<CardContent className="relative p-0">
+		<Card className="max-w-[206px]">
+			<CardContent className="group relative p-0">
 				{editTaskId === task.id ? (
 					<>
 						<Input
@@ -42,37 +40,22 @@ const Task = ({
 							autoFocus
 							maxLength={192}
 						/>
-						<Button
-							className="absolute h-min text-base top-0 right-7 rounded-t-none p-1"
-							onClick={onClick}
-						>
-							<Image
-								src="/static/check.svg"
-								alt="confirm task"
-								width={16}
-								height={16}
-								className="invert dark:invert-0"
-							/>
-						</Button>
+						<ActionButton type="confirm" onClick={onClick} />
 					</>
 				) : (
 					<>
 						<p className="break-words p-2 pr-6">{task.name}</p>
-						<Button
-							className="absolute h-min text-base top-0 right-7 rounded-t-none p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+						<ActionButton
+							type="edit"
 							onClick={() => setEditTaskId(task.id)}
-						>
-							<Image
-								src="/static/pencil.svg"
-								alt="edit task"
-								width={16}
-								height={16}
-								className="invert dark:invert-0"
-							/>
-						</Button>
+							changesOpacity
+						/>
 					</>
 				)}
-				<DeleteButton onDelete={() => handleDelete(listId, task.id)} isSmall />
+				<ActionButton
+					type="delete"
+					onClick={() => handleDelete(listId, task.id)}
+				/>
 			</CardContent>
 		</Card>
 	);

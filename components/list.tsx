@@ -12,7 +12,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
 import Image from "next/image";
-import DeleteButton from "./delete-button";
+import ActionButton from "./action-button";
 
 type ListProps = {
 	list: ListType;
@@ -64,41 +64,25 @@ const List = ({
 										autoFocus
 										maxLength={64}
 									/>
-									<Button
-										className="absolute h-min text-base top-0 right-9 rounded-t-none p-1"
-										onClick={onClick}
-									>
-										<Image
-											src="/static/check.svg"
-											alt="confirm title"
-											width={24}
-											height={24}
-											className="invert dark:invert-0"
-										/>
-									</Button>
+									<ActionButton type="confirm" onClick={onClick} isBig />
 								</>
 							) : (
 								<>
 									<CardTitle className="text-3xl overflow-hidden text-ellipsis whitespace-nowrap">
 										{list.title}
 									</CardTitle>
-									<Button
-										className="absolute h-min text-base top-0 right-9 rounded-t-none p-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+									<ActionButton
+										type="edit"
 										onClick={() => setEditListId(list.id)}
-									>
-										<Image
-											src="/static/pencil.svg"
-											alt="edit title"
-											width={24}
-											height={24}
-											className="invert dark:invert-0"
-										/>
-									</Button>
+										isBig
+										changesOpacity
+									/>
 								</>
 							)}
-							<DeleteButton
-								onDelete={() => handleDelete(list.id)}
-								isSmall={false}
+							<ActionButton
+								type="delete"
+								onClick={() => handleDelete(list.id)}
+								isBig
 							/>
 						</CardHeader>
 						<CardContent className="flex flex-col gap-2 overflow-y-auto">
