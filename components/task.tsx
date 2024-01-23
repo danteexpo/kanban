@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { TaskType } from "@/api/api";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import ActionButton from "./action-button";
 import useEditStore from "@/stores/useEditStore";
 
@@ -15,11 +15,16 @@ type TaskProps = {
 const Task = ({ task, listId, handleDelete, handleUpdateTask }: TaskProps) => {
 	const [name, setName] = useState(task.name);
 	const { editTaskId, setEditTaskId } = useEditStore();
-	console.log(editTaskId);
 
-	const onClick = () => {
+	const handleUpdate = () => {
 		setEditTaskId(null);
 		handleUpdateTask(listId, task.id, name);
+	};
+
+	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleUpdate();
+		}
 	};
 
 	return (
@@ -31,10 +36,11 @@ const Task = ({ task, listId, handleDelete, handleUpdateTask }: TaskProps) => {
 							className="min-h-11 pr-16"
 							value={name}
 							onChange={(e) => setName(e.target.value)}
+							onKeyDown={handleKeyDown}
 							autoFocus
 							maxLength={192}
 						/>
-						<ActionButton type="confirm" onClick={onClick} />
+						<ActionButton type="confirm" onClick={handleUpdate} />
 					</>
 				) : (
 					<>

@@ -8,7 +8,7 @@ import {
 	CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { KeyboardEvent, useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
 import ActionButton from "./action-button";
@@ -33,9 +33,15 @@ const List = ({
 	const [newTask, setNewTask] = useState("");
 	const { editListId, setEditListId } = useEditStore();
 
-	const onClick = () => {
+	const handleUpdate = () => {
 		setEditListId(null);
 		handleUpdateList(list.id, title);
+	};
+
+	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleUpdate();
+		}
 	};
 
 	return (
@@ -54,10 +60,11 @@ const List = ({
 										className="min-h-11 pr-16 w-full"
 										value={title}
 										onChange={(e) => setTitle(e.target.value)}
+										onKeyDown={handleKeyDown}
 										autoFocus
 										maxLength={64}
 									/>
-									<ActionButton type="confirm" onClick={onClick} isBig />
+									<ActionButton type="confirm" onClick={handleUpdate} isBig />
 								</>
 							) : (
 								<>
