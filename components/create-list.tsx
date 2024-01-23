@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { TaskType } from "@/api/api";
 import { initialTask } from "@/lib/utils";
 import ActionButton from "./action-button";
@@ -27,6 +27,7 @@ const CreateList = ({
 	listsLength,
 	minimalId,
 }: CreateListProps) => {
+	const [open, setOpen] = useState(false);
 	const [title, setTitle] = useState("");
 	const [tasks, setTasks] = useState<TaskType[]>([initialTask]);
 
@@ -59,7 +60,7 @@ const CreateList = ({
 		);
 	};
 
-	const onClick = () => {
+	const handleCreate = () => {
 		const filteredTasks: TaskType[] = tasks.filter((task) => task.name !== "");
 		const orderedTasks: TaskType[] = filteredTasks.map((task, index) => {
 			return {
@@ -74,8 +75,15 @@ const CreateList = ({
 		setTasks([initialTask]);
 	};
 
+	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === "Enter") {
+			handleCreate();
+			setOpen(false);
+		}
+	};
+
 	return (
-		<Sheet>
+		<Sheet open={open} onOpenChange={setOpen}>
 			<SheetTrigger asChild>
 				<Button
 					variant="outline"
@@ -109,6 +117,7 @@ const CreateList = ({
 								placeholder="Title..."
 								value={title}
 								onChange={(e) => setTitle(e.target.value)}
+								onKeyDown={handleKeyDown}
 								className="min-h-11"
 								maxLength={64}
 							/>
@@ -129,6 +138,7 @@ const CreateList = ({
 								placeholder={`New task...`}
 								value={task.name}
 								onChange={(e) => handleTasks(task.id, e)}
+								onKeyDown={handleKeyDown}
 								className="col-start-2 col-span-3 min-h-11"
 								maxLength={192}
 							/>
@@ -153,7 +163,7 @@ const CreateList = ({
 					<SheetClose asChild>
 						<Button
 							className="w-full"
-							onClick={onClick}
+							onClick={handleCreate}
 							disabled={title === ""}
 						>
 							Create new list

@@ -13,6 +13,7 @@ import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
 import ActionButton from "./action-button";
 import useEditStore from "@/stores/useEditStore";
+import { cn } from "@/lib/utils";
 
 type ListProps = {
 	list: ListType;
@@ -38,9 +39,21 @@ const List = ({
 		handleUpdateList(list.id, title);
 	};
 
-	const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+	const handleCreate = () => {
+		handleAddTask(list.id, newTask);
+		setNewTask("");
+	};
+
+	const handleKeyDown = (
+		e: KeyboardEvent<HTMLInputElement>,
+		type: "update" | "create"
+	) => {
 		if (e.key === "Enter") {
-			handleUpdate();
+			if (type === "update") {
+				handleUpdate();
+			} else {
+				handleCreate();
+			}
 		}
 	};
 
@@ -52,7 +65,14 @@ const List = ({
 					ref={provided.innerRef}
 					{...provided.droppableProps}
 				>
-					<Card className="min-w-[240px] max-w-[240px] grid grid-rows-[68px_1fr_72px] h-min max-h-full">
+					<Card
+						className={cn(
+							"min-w-[240px] max-w-[240px] grid h-min max-h-full",
+							list.tasks.length > 0
+								? "grid-rows-[68px_1fr_72px]"
+								: "grid-rows-[68px_72px] "
+						)}
+					>
 						<CardHeader className="group max-w-[240px] relative space-y-0">
 							{editListId === list.id ? (
 								<>
@@ -60,7 +80,7 @@ const List = ({
 										className="min-h-11 pr-16 w-full"
 										value={title}
 										onChange={(e) => setTitle(e.target.value)}
-										onKeyDown={handleKeyDown}
+										onKeyDown={(e) => handleKeyDown(e, "update")}
 										autoFocus
 										maxLength={64}
 									/>
@@ -85,48 +105,45 @@ const List = ({
 								isBig
 							/>
 						</CardHeader>
-						<CardContent className="flex flex-col gap-2 overflow-y-auto">
-							{list.tasks.map((task, index) => (
-								<Draggable
-									draggableId={`draggable-task-${task.id}`}
-									index={index}
-									key={`draggable-task-${task.id}`}
-								>
-									{(provided) => (
-										<div
-											ref={provided.innerRef}
-											{...provided.draggableProps}
-											{...provided.dragHandleProps}
-										>
-											<Task
-												key={task.id}
-												task={task}
-												listId={list.id}
-												handleDelete={handleDelete}
-												handleUpdateTask={handleUpdateTask}
-											/>
-										</div>
-									)}
-								</Draggable>
-							))}
-							{provided.placeholder}
-						</CardContent>
+						{list.tasks.length > 0 && (
+							<CardContent className="flex flex-col gap-2 overflow-y-auto">
+								{list.tasks.map((task, index) => (
+									<Draggable
+										draggableId={`draggable-task-${task.id}`}
+										index={index}
+										key={`draggable-task-${task.id}`}
+									>
+										{(provided) => (
+											<div
+												ref={provided.innerRef}
+												{...provided.draggableProps}
+												{...provided.dragHandleProps}
+											>
+												<Task
+													key={task.id}
+													task={task}
+													listId={list.id}
+													handleDelete={handleDelete}
+													handleUpdateTask={handleUpdateTask}
+												/>
+											</div>
+										)}
+									</Draggable>
+								))}
+								{provided.placeholder}
+							</CardContent>
+						)}
 						<CardFooter className="flex gap-2">
 							<Input
 								type="text"
 								placeholder="New task..."
 								value={newTask}
 								onChange={(e) => setNewTask(e.target.value)}
+								onKeyDown={(e) => handleKeyDown(e, "create")}
 								maxLength={192}
 								disabled={list.tasks.length > 9}
 							/>
-							<Button
-								onClick={() => {
-									handleAddTask(list.id, newTask);
-									setNewTask("");
-								}}
-								disabled={newTask === ""}
-							>
+							<Button onClick={handleCreate} disabled={newTask === ""}>
 								Add
 							</Button>
 						</CardFooter>
