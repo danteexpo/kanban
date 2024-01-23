@@ -12,9 +12,9 @@ import { Label } from "@/components/ui/label";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
-import { TaskType } from "@/api/api";
 import { initialTask } from "@/lib/utils";
 import ActionButton from "./action-button";
+import { TaskType } from "@/types/types";
 
 type CreateListProps = {
 	handleCreateList: (title: string, tasks: TaskType[]) => void;

@@ -1,9 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { TaskType } from "@/api/api";
 import { KeyboardEvent, useState } from "react";
 import ActionButton from "./action-button";
 import useEditStore from "@/stores/useEditStore";
+import { TaskType } from "@/types/types";
 
 type TaskProps = {
 	task: TaskType;

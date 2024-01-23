@@ -1,4 +1,3 @@
-import { ListType } from "@/api/api";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -14,6 +13,7 @@ import Task from "./task";
 import ActionButton from "./action-button";
 import useEditStore from "@/stores/useEditStore";
 import { cn } from "@/lib/utils";
+import { ListType } from "@/types/types";
 
 type ListProps = {
 	list: ListType;

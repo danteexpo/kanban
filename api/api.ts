@@ -1,13 +1,4 @@
-export interface TaskType {
-	id: number;
-	name: string;
-}
-
-export interface ListType {
-	id: number;
-	title: string;
-	tasks: TaskType[];
-}
+import { ListType } from "@/types/types";
 
 type NewListData = Omit<ListType, "id">;
 

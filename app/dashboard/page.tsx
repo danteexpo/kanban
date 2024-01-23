@@ -1,6 +1,6 @@
 "use client";
 
-import api, { ListType, TaskType } from "@/api/api";
+import api from "@/api/api";
 import CreateList from "@/components/create-list";
 import List from "@/components/list";
 import SkeletonList from "@/components/skeleton-list";
@@ -11,6 +11,7 @@ import {
 	Draggable,
 	DropResult,
 } from "@hello-pangea/dnd";
+import { ListType, TaskType } from "@/types/types";
 
 export default function Dashboard() {
 	const [lists, setLists] = useState<ListType[]>([]);
