@@ -1,27 +1,21 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { TaskType } from "@/api/api";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import ActionButton from "./action-button";
+import useEditStore from "@/stores/useEditStore";
 
 type TaskProps = {
 	task: TaskType;
 	listId: number;
 	handleDelete: (listId: number, taskId?: number) => void;
 	handleUpdateTask: (listId: number, taskId: number, taskName: string) => void;
-	editTaskId: number | null;
-	setEditTaskId: Dispatch<SetStateAction<number | null>>;
 };
 
-const Task = ({
-	task,
-	listId,
-	handleDelete,
-	handleUpdateTask,
-	editTaskId,
-	setEditTaskId,
-}: TaskProps) => {
+const Task = ({ task, listId, handleDelete, handleUpdateTask }: TaskProps) => {
 	const [name, setName] = useState(task.name);
+	const { editTaskId, setEditTaskId } = useEditStore();
+	console.log(editTaskId);
 
 	const onClick = () => {
 		setEditTaskId(null);

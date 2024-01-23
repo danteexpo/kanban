@@ -8,11 +8,11 @@ import {
 	CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
-import Image from "next/image";
 import ActionButton from "./action-button";
+import useEditStore from "@/stores/useEditStore";
 
 type ListProps = {
 	list: ListType;
@@ -20,10 +20,6 @@ type ListProps = {
 	handleUpdateList: (listId: number, title: string) => void;
 	handleAddTask: (listId: number, input: string) => void;
 	handleUpdateTask: (listId: number, taskId: number, taskName: string) => void;
-	editListId: number | null;
-	setEditListId: Dispatch<SetStateAction<number | null>>;
-	editTaskId: number | null;
-	setEditTaskId: Dispatch<SetStateAction<number | null>>;
 };
 
 const List = ({
@@ -32,13 +28,10 @@ const List = ({
 	handleUpdateList,
 	handleAddTask,
 	handleUpdateTask,
-	editListId,
-	setEditListId,
-	editTaskId,
-	setEditTaskId,
 }: ListProps) => {
 	const [title, setTitle] = useState(list.title);
 	const [newTask, setNewTask] = useState("");
+	const { editListId, setEditListId } = useEditStore();
 
 	const onClick = () => {
 		setEditListId(null);
@@ -104,8 +97,6 @@ const List = ({
 												listId={list.id}
 												handleDelete={handleDelete}
 												handleUpdateTask={handleUpdateTask}
-												editTaskId={editTaskId}
-												setEditTaskId={setEditTaskId}
 											/>
 										</div>
 									)}

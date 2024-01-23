@@ -15,8 +15,6 @@ import {
 export default function Dashboard() {
 	const [lists, setLists] = useState<ListType[]>([]);
 	const [initialLoad, setInitialLoad] = useState(false);
-	const [editListId, setEditListId] = useState<number | null>(null);
-	const [editTaskId, setEditTaskId] = useState<number | null>(null);
 	const [minimalId, setMinimalId] = useState<number | null>(null);
 
 	useEffect(() => {
@@ -223,10 +221,6 @@ export default function Dashboard() {
 														handleUpdateList={handleUpdateList}
 														handleAddTask={handleAddTask}
 														handleUpdateTask={handleUpdateTask}
-														editListId={editListId}
-														setEditListId={setEditListId}
-														editTaskId={editTaskId}
-														setEditTaskId={setEditTaskId}
 													/>
 												</div>
 											)}
