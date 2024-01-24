@@ -14,7 +14,7 @@ datasource db {
 model List {
   id    Int    @id @default(autoincrement())
   title String
-  Tasks Task[]
+  tasks Task[]
 }
 
 model Task {
