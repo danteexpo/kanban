@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import Lists from "./_components/Lists";
+import Lists from "./_components/lists";
 
 export default async function Dashboard() {
 	const lists = await prisma.list.findMany({

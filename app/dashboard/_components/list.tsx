@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { KeyboardEvent, useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
-import ActionButton from "./action-button";
+import ActionButton from "../../../components/action-button";
 import useEditStore from "@/stores/useEditStore";
 import { cn } from "@/lib/utils";
 import { ListType } from "@/types/types";

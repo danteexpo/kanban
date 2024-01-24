@@ -1,7 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { KeyboardEvent, useState } from "react";
-import ActionButton from "./action-button";
+import ActionButton from "../../../components/action-button";
 import useEditStore from "@/stores/useEditStore";
 import { TaskType } from "@/types/types";
 
