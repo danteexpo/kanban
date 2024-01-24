@@ -4,12 +4,23 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
+import { siteConfig } from "@/config/site";
+import { ClerkProvider } from "@clerk/nextjs";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-	title: "Dashboard",
-	description: "Manage your tasks and workflows.",
+	title: {
+		default: siteConfig.name,
+		template: `%s | ${siteConfig.name}`,
+	},
+	description: siteConfig.description,
+	icons: [
+		{
+			url: "/icon.svg",
+			href: "/icon.svg",
+		},
+	],
 };
 
 export default function RootLayout({
@@ -18,26 +29,25 @@ export default function RootLayout({
 	children: React.ReactNode;
 }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<head>
-				<link rel="icon" href="/icon.svg" type="image/svg" sizes="20x20" />
-			</head>
-			<body
-				className={cn(
-					"min-h-screen max-h-screen text-xl grid grid-rows-[88px_1fr] bg-background font-sans antialiased px-6",
-					fontSans.variable
-				)}
-			>
-				<ThemeProvider
-					attribute="class"
-					defaultTheme="system"
-					enableSystem
-					disableTransitionOnChange
+		<ClerkProvider>
+			<html lang="en" suppressHydrationWarning>
+				<body
+					className={cn(
+						"min-h-screen max-h-screen text-xl grid grid-rows-[88px_1fr] bg-background font-sans antialiased px-6",
+						fontSans.variable
+					)}
 				>
-					<Header />
-					{children}
-				</ThemeProvider>
-			</body>
-		</html>
+					<ThemeProvider
+						attribute="class"
+						defaultTheme="system"
+						enableSystem
+						disableTransitionOnChange
+					>
+						<Header />
+						{children}
+					</ThemeProvider>
+				</body>
+			</html>
+		</ClerkProvider>
 	);
 }

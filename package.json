@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.29.5",
+    "@clerk/themes": "^1.7.9",
     "@hello-pangea/dnd": "^16.5.0",
     "@prisma/client": "^5.8.1",
     "@radix-ui/react-dialog": "^1.0.5",

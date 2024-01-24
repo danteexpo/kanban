@@ -40,7 +40,7 @@ const Lists = ({ lists }: ListsProps) => {
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 											>
-												<div className="border border-white p-4">
+												<div className="border border-black dark:border-white p-4">
 													<h4>{list.title}</h4>
 													{/* {list.tasks.length > 0 &&
 														list.tasks.map((task) => (
