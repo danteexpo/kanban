@@ -1,5 +1,6 @@
 "use client";
 
+import List from "./list";
 import { ListType } from "@/types/types";
 import {
 	DragDropContext,
@@ -7,6 +8,7 @@ import {
 	Draggable,
 	DropResult,
 } from "@hello-pangea/dnd";
+import CreateList from "./create-list";
 
 type ListsProps = {
 	lists: ListType[];
@@ -40,32 +42,19 @@ const Lists = ({ lists }: ListsProps) => {
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 											>
-												<div className="border border-black dark:border-white p-4">
-													<h4>{list.title}</h4>
-													{/* {list.tasks.length > 0 &&
-														list.tasks.map((task) => (
-															<p key={task.id}>{task.name}</p>
-														))} */}
-												</div>
-												{/* <List
-														list={list}
-														handleDelete={handleDelete}
-														handleUpdateList={handleUpdateList}
-														handleAddTask={handleAddTask}
-														handleUpdateTask={handleUpdateTask}
-													/> */}
+												<List
+													list={list}
+													// handleDelete={handleDelete}
+													// handleUpdateList={handleUpdateList}
+													// handleAddTask={handleAddTask}
+													// handleUpdateTask={handleUpdateTask}
+												/>
 											</div>
 										)}
 									</Draggable>
 								))}
 								{provided.placeholder}
-								{/* {minimalId !== null && (
-										<CreateList
-											handleCreateList={handleCreateList}
-											listsLength={lists.length}
-											minimalId={minimalId}
-										/>
-									)} */}
+								<CreateList listsLength={lists.length} />
 							</>
 						</main>
 					</>

@@ -5,8 +5,6 @@ export default async function Page() {
 	const lists = await prisma.list.findMany({
 		include: { tasks: true },
 	});
-
-	console.log(lists);
 	// const [lists, setLists] = useState<ListType[]>([]);
 	// const [initialLoad, setInitialLoad] = useState(false);
 	// const [minimalId, setMinimalId] = useState<number | null>(null);
@@ -175,9 +173,5 @@ export default async function Page() {
 	// 	}
 	// };
 
-	return (
-		<div className="flex gap-4 overflow-x-auto pt-1 px-1 pb-4">
-			<Lists lists={lists} />
-		</div>
-	);
+	return <Lists lists={lists} />;
 }
