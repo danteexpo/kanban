@@ -1,15 +1,5 @@
-import {
-	Sheet,
-	SheetContent,
-	SheetDescription,
-	SheetFooter,
-	SheetHeader,
-	SheetTitle,
-	SheetTrigger,
-} from "@/components/ui/sheet";
-import { Label } from "@/components/ui/label";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "../../../components/ui/button";
-import { Input } from "../../../components/ui/input";
 import Form from "./form";
 import { useEffect, useState } from "react";
 // import { ChangeEvent, FormEvent, KeyboardEvent, useState } from "react";
@@ -99,80 +89,7 @@ CreateListProps) => {
 				</Button>
 			</SheetTrigger>
 			<SheetContent className="grid grid-rows-[128px_1fr_40px] xxs:grid-rows-[100px_1fr_40px] place-items-start w-full max-w-sm">
-				<Form>
-					<SheetHeader className="w-full">
-						<SheetTitle>Create new list</SheetTitle>
-						<SheetDescription>
-							Add a title and a maximum of 10 tasks. Click create when
-							you&apos;re done.
-						</SheetDescription>
-					</SheetHeader>
-					<div className="flex flex-col gap-4 py-4 w-full h-full overflow-y-auto pr-4">
-						<div className="grid grid-cols-4 items-center gap-4">
-							<Label htmlFor="title" className="text-right">
-								Title
-							</Label>
-							<div className="relative col-span-3">
-								{/* {title === "" && ( */}
-								<p className="absolute -top-6 right-1 text-lg font-semibold text-[hsl(0,62.8%,30.6%)]">
-									*Add a title
-								</p>
-								{/* )} */}
-								<Input
-									id="title"
-									name="title"
-									placeholder="Title..."
-									// value={title}
-									// onChange={(e) => setTitle(e.target.value)}
-									// onKeyDown={handleKeyDown}
-									className="min-h-11"
-									maxLength={64}
-								/>
-							</div>
-						</div>
-						{/* {tasks.map((task, index) => (
-							<div
-								key={task.id}
-								className="relative grid grid-cols-4 items-center gap-4"
-							>
-								{index === 0 && (
-									<Label htmlFor={`task-${task.id}`} className="text-right">
-										Tasks
-									</Label>
-								)}
-								<Input
-									id={`task-${task.id}`}
-									placeholder={`New task...`}
-									value={task.name}
-									onChange={(e) => handleTasks(task.id, e)}
-									onKeyDown={handleKeyDown}
-									className="col-start-2 col-span-3 min-h-11"
-									maxLength={192}
-								/>
-								<ActionButton
-									type="delete"
-									onClick={() => handleDelete(task.id)}
-									isDisabled={tasks.length < 2}
-								/>
-							</div>
-						))} */}
-						<div className="grid grid-cols-4 items-center gap-4">
-							<Button
-								type="button"
-								className="w-full col-start-2 col-span-3"
-								// onClick={handleAdd}
-								// disabled={tasks.length > 9}
-							>
-								Add new task
-							</Button>
-						</div>
-					</div>
-					<SheetFooter className="w-full">
-						<Button type="submit" className="w-full">
-							Create new list
-						</Button>
-					</SheetFooter>
-				</Form>
+				<Form />
 			</SheetContent>
 		</Sheet>
 	);
