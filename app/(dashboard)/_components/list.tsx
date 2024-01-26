@@ -7,7 +7,7 @@ import {
 	CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { KeyboardEvent, useState } from "react";
+import { useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
 import ActionButton from "../../../components/action-button";
