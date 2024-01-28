@@ -14,7 +14,7 @@ import ActionButton from "../../../components/action-button";
 import useEditStore from "@/stores/useEditStore";
 import { cn } from "@/lib/utils";
 import { ListType } from "@/types/types";
-import { DeleteList } from "@/actions/deleteList";
+import { DeleteList } from "@/actions/delete-list";
 
 type ListProps = {
 	list: ListType;

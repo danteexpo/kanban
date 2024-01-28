@@ -1,18 +1,30 @@
 "use client";
 
-import { createList } from "@/actions/createList";
-import { useFormState } from "react-dom";
 import FormHeader from "./form-header";
 import FormContent from "./form-content";
+import { createList } from "@/actions/create-list";
+import { useAction } from "@/hooks/use-action";
 
 const Form = () => {
-	const initialState = { message: "", errors: {} };
-	const [state, dispatch] = useFormState(createList, initialState);
+	const { execute, fieldErrors } = useAction(createList, {
+		onSuccess: (data) => {
+			console.log(data);
+		},
+		onError: (error) => {
+			console.error(error);
+		},
+	});
+
+	const onSubmit = (formData: FormData) => {
+		const title = formData.get("title") as string;
+
+		execute({ title });
+	};
 
 	return (
-		<form action={dispatch}>
+		<form action={onSubmit}>
 			<FormHeader />
-			<FormContent errors={state?.errors} />
+			<FormContent errors={fieldErrors} />
 		</form>
 	);
 };
