@@ -1,7 +1,7 @@
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "../../../components/ui/button";
-import Form from "./form";
 import { useEffect, useState } from "react";
+import SheetForm from "./sheet-form";
 
 type CreateListProps = {
 	listsLength: number;
@@ -26,8 +26,8 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 					Create new list...
 				</Button>
 			</SheetTrigger>
-			<SheetContent className="grid grid-rows-[128px_1fr_40px] xxs:grid-rows-[100px_1fr_40px] place-items-start w-full max-w-sm">
-				<Form />
+			<SheetContent>
+				<SheetForm />
 			</SheetContent>
 		</Sheet>
 	);
