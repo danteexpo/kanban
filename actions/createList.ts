@@ -18,7 +18,7 @@ const CreateList = z.object({
 	}),
 });
 
-export async function create(prevState: State, formData: FormData) {
+export async function createList(prevState: State, formData: FormData) {
 	const validatedFields = CreateList.safeParse({
 		title: formData.get("title"),
 	});

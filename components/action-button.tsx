@@ -1,10 +1,12 @@
 import Image from "next/image";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { useFormStatus } from "react-dom";
 
 type ActionButtonProps = {
 	type: "delete" | "edit" | "confirm";
 	onClick: () => void;
+	isSubmit?: boolean;
 	isDisabled?: boolean;
 	isBig?: boolean;
 	changesOpacity?: boolean;
@@ -13,12 +15,16 @@ type ActionButtonProps = {
 const ActionButton = ({
 	type,
 	onClick,
+	isSubmit,
 	isDisabled,
 	isBig,
 	changesOpacity,
 }: ActionButtonProps) => {
+	const { pending } = useFormStatus();
+
 	return (
 		<Button
+			type={isSubmit ? "submit" : "button"}
 			className={cn(
 				"absolute h-min top-0 p-1",
 				type === "delete" && "right-0 rounded-tl-none rounded-br-none",
@@ -29,7 +35,7 @@ const ActionButton = ({
 					"opacity-0 group-hover:opacity-100 transition-opacity duration-300"
 			)}
 			onClick={onClick}
-			disabled={isDisabled}
+			disabled={isDisabled || pending}
 		>
 			<Image
 				src={`/static/${type}.svg`}

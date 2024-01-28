@@ -1,13 +1,13 @@
 "use client";
 
-import { create } from "@/actions/createList";
+import { createList } from "@/actions/createList";
 import { useFormState } from "react-dom";
 import FormHeader from "./form-header";
 import FormContent from "./form-content";
 
 const Form = () => {
 	const initialState = { message: "", errors: {} };
-	const [state, dispatch] = useFormState(create, initialState);
+	const [state, dispatch] = useFormState(createList, initialState);
 
 	return (
 		<form action={dispatch}>
