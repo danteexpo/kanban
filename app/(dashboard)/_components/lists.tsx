@@ -15,6 +15,65 @@ type ListsProps = {
 };
 
 const Lists = ({ lists }: ListsProps) => {
+	// const handleDragDrop = (result: DropResult) => {
+	// 	const { source, destination, type } = result;
+
+	// 	if (!destination) return;
+
+	// 	if (
+	// 		source.droppableId === destination.droppableId &&
+	// 		source.index === destination.index
+	// 	)
+	// 		return;
+
+	// 	if (type === "group") {
+	// 		const orderedLists = [...lists];
+
+	// 		const [removedList] = orderedLists.splice(source.index, 1);
+
+	// 		orderedLists.splice(destination.index, 0, removedList);
+
+	// 		api
+	// 			.updateAll(orderedLists)
+	// 			.then((updatedLists) => setLists([...updatedLists]));
+	// 	} else {
+	// 		const listSourceIndex = lists.findIndex(
+	// 			(list) => `droppable-list-${list.id}` === source.droppableId
+	// 		);
+
+	// 		const listDestinationIndex = lists.findIndex(
+	// 			(list) => `droppable-list-${list.id}` === destination.droppableId
+	// 		);
+
+	// 		const newSourceTasks = [...lists[listSourceIndex].tasks];
+
+	// 		const newDestinationTasks =
+	// 			source.droppableId !== destination.droppableId
+	// 				? [...lists[listDestinationIndex].tasks]
+	// 				: newSourceTasks;
+
+	// 		const [deletedTask] = newSourceTasks.splice(source.index, 1);
+
+	// 		newDestinationTasks.splice(destination.index, 0, deletedTask);
+
+	// 		const newLists = [...lists];
+
+	// 		newLists[listSourceIndex] = {
+	// 			...lists[listSourceIndex],
+	// 			tasks: newSourceTasks,
+	// 		};
+
+	// 		newLists[listDestinationIndex] = {
+	// 			...lists[listDestinationIndex],
+	// 			tasks: newDestinationTasks,
+	// 		};
+
+	// 		api
+	// 			.updateAll(newLists)
+	// 			.then((updatedLists) => setLists([...updatedLists]));
+	// 	}
+	// };
+
 	return (
 		<DragDropContext onDragEnd={(result: DropResult) => console.log(result)}>
 			<Droppable
@@ -42,13 +101,7 @@ const Lists = ({ lists }: ListsProps) => {
 												{...provided.draggableProps}
 												{...provided.dragHandleProps}
 											>
-												<List
-													list={list}
-													// handleDelete={handleDelete}
-													// handleUpdateList={handleUpdateList}
-													// handleAddTask={handleAddTask}
-													// handleUpdateTask={handleUpdateTask}
-												/>
+												<List list={list} />
 											</div>
 										)}
 									</Draggable>

@@ -1,36 +1,17 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { KeyboardEvent, useState } from "react";
+import { useState } from "react";
 import ActionButton from "../../../components/action-button";
 import useEditStore from "@/stores/useEditStore";
 import { TaskType } from "@/types/types";
 
 type TaskProps = {
 	task: TaskType;
-	listId: number;
-	// handleDelete: (listId: number, taskId?: number) => void;
-	// handleUpdateTask: (listId: number, taskId: number, taskName: string) => void;
 };
 
-const Task = ({
-	task,
-	listId,
-}: // handleDelete,
-// handleUpdateTask
-TaskProps) => {
+const Task = ({ task }: TaskProps) => {
 	const [name, setName] = useState(task.name);
 	const { editTaskId, setEditTaskId } = useEditStore();
-
-	// const handleUpdate = () => {
-	// 	setEditTaskId(null);
-	// 	handleUpdateTask(listId, task.id, name);
-	// };
-
-	// const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-	// 	if (e.key === "Enter") {
-	// 		handleUpdate();
-	// 	}
-	// };
 
 	return (
 		<Card className="max-w-[206px]">
