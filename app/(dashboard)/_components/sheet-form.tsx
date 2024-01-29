@@ -3,7 +3,6 @@
 import FormContent from "./form-content";
 import { createList } from "@/actions/create-list";
 import { useAction } from "@/hooks/use-action";
-import FormError from "./form-error";
 import {
 	SheetDescription,
 	SheetFooter,
@@ -39,10 +38,9 @@ const SheetForm = () => {
 					done.
 				</SheetDescription>
 			</SheetHeader>
-			<FormContent />
+			<FormContent errors={fieldErrors} />
 			<SheetFooter className="w-full">
 				<FormSubmit label="Create new list" />
-				<FormError errors={fieldErrors} />
 			</SheetFooter>
 		</form>
 	);

@@ -1,20 +1,28 @@
+"use client";
+
+import { cn } from "@/lib/utils";
+
 type FormErrorProps = {
-	errors?: {
-		title?: string[];
-	};
+	id: string;
+	errors?: Record<string, string[] | undefined>;
+	className?: string;
 };
 
-const FormError = ({ errors }: FormErrorProps) => {
-	if (errors?.title) {
-		return errors.title.map((error: string) => (
-			<p
-				key={error}
-				className="absolute top-full left-0 text-lg font-semibold text-red-600"
-			>
-				Error: {error}
-			</p>
-		));
+export const FormError = ({ id, errors, className }: FormErrorProps) => {
+	if (!errors) {
+		return null;
 	}
-};
 
-export default FormError;
+	return (
+		<div id={`${id}-error`} aria-live="polite" className={cn(className)}>
+			{errors?.[id]?.map((error: string) => (
+				<div
+					key={error}
+					className="flex items-center text-lg font-semibold p-2 border text-rose-500 border-rose-500 bg-rose-500/10 rounded-md"
+				>
+					{error}
+				</div>
+			))}
+		</div>
+	);
+};
