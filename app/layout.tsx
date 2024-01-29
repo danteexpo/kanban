@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import { siteConfig } from "@/config/site";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/toaster";
 
 const fontSans = FontSans({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -46,7 +46,7 @@ export default function RootLayout({
 					>
 						<Header />
 						{children}
-						<Toaster position="bottom-left" />
+						<Toaster />
 					</ThemeProvider>
 				</body>
 			</html>

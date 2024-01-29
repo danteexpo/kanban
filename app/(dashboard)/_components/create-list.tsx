@@ -15,13 +15,14 @@ import { createList } from "@/actions/create-list";
 import { useAction } from "@/hooks/use-action";
 import FormContent from "../../../components/form/form-content";
 import FormSubmit from "../../../components/form/form-submit";
-import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 
 type CreateListProps = {
 	listsLength: number;
 };
 
 const CreateList = ({ listsLength }: CreateListProps) => {
+	const { toast } = useToast();
 	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
@@ -31,10 +32,10 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 	const { execute, fieldErrors } = useAction(createList, {
 		onSuccess: (data) => {
 			console.log(data);
-			toast.success("List created!");
+			toast({ title: "List successfully created!" });
 		},
 		onError: (error) => {
-			toast.error(error);
+			toast({ title: error });
 		},
 	});
 
