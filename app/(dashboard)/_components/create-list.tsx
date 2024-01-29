@@ -15,6 +15,7 @@ import { createList } from "@/actions/create-list";
 import { useAction } from "@/hooks/use-action";
 import FormContent from "../../../components/form/form-content";
 import FormSubmit from "../../../components/form/form-submit";
+import { toast } from "sonner";
 
 type CreateListProps = {
 	listsLength: number;
@@ -30,9 +31,10 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 	const { execute, fieldErrors } = useAction(createList, {
 		onSuccess: (data) => {
 			console.log(data);
+			toast.success("List created!");
 		},
 		onError: (error) => {
-			console.error(error);
+			toast.error(error);
 		},
 	});
 
