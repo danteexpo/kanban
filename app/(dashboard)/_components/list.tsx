@@ -39,8 +39,8 @@ const List = ({ list }: ListProps) => {
 						className={cn(
 							"min-w-[240px] max-w-[240px] grid h-min max-h-full",
 							list.tasks.length > 0
-								? "grid-rows-[68px_1fr_72px]"
-								: "grid-rows-[68px_72px] "
+								? "grid-rows-[68px_1fr_56px]"
+								: "grid-rows-[68px_56px] "
 						)}
 					>
 						<CardHeader className="group max-w-[240px] relative space-y-0">
@@ -51,7 +51,7 @@ const List = ({ list }: ListProps) => {
 										value={title}
 										onChange={(e) => setTitle(e.target.value)}
 										autoFocus
-										maxLength={64}
+										maxLength={32}
 									/>
 									<ActionButton
 										type="confirm"
@@ -101,7 +101,7 @@ const List = ({ list }: ListProps) => {
 								{provided.placeholder}
 							</CardContent>
 						)}
-						<CardFooter className="flex gap-2">
+						<CardFooter className="flex gap-2 pt-0 h-min">
 							<Input
 								type="text"
 								placeholder="New task..."

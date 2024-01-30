@@ -24,15 +24,17 @@ type CreateListProps = {
 const CreateList = ({ listsLength }: CreateListProps) => {
 	const { toast } = useToast();
 	const [open, setOpen] = useState(false);
+	const [tasks, setTasks] = useState<string[]>([""]);
 
 	useEffect(() => {
 		setOpen(false);
+		setTasks([""]);
 	}, [listsLength]);
 
 	const { execute, fieldErrors } = useAction(createList, {
 		onSuccess: (data) => {
 			console.log(data);
-			toast({ title: "List successfully created!" });
+			toast({ title: `'${data.title}' successfully created!` });
 		},
 		onError: (error) => {
 			toast({ title: error });
@@ -41,7 +43,7 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 
 	const onSubmit = (formData: FormData) => {
 		const title = formData.get("title") as string;
-		execute({ title });
+		execute({ title, tasks });
 	};
 
 	return (
@@ -59,7 +61,7 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 			<SheetContent>
 				<form
 					action={onSubmit}
-					className="relative grid grid-rows-[128px_1fr_40px] xxs:grid-rows-[100px_1fr_40px] place-items-start w-full max-w-sm"
+					className="relative grid grid-rows-[128px_1fr_40px] xxs:grid-rows-[100px_1fr_40px] place-items-start w-full h-full max-w-sm"
 				>
 					<SheetHeader className="w-full">
 						<SheetTitle>Create new list</SheetTitle>
@@ -68,7 +70,7 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 							you&apos;re done.
 						</SheetDescription>
 					</SheetHeader>
-					<FormContent errors={fieldErrors} />
+					<FormContent tasks={tasks} setTasks={setTasks} errors={fieldErrors} />
 					<SheetFooter className="w-full">
 						<FormSubmit className="w-full">Create new list</FormSubmit>
 					</SheetFooter>

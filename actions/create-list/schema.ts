@@ -9,4 +9,5 @@ export const CreateList = z.object({
 		.min(3, {
 			message: "Title is too short.",
 		}),
+	tasks: z.array(z.string()),
 });

@@ -18,7 +18,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 		};
 	}
 
-	const { title } = data;
+	const { title, tasks } = data;
 
 	let list;
 
@@ -26,6 +26,17 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 		list = await prisma.list.create({
 			data: {
 				title,
+				tasks: {
+					createMany: {
+						data: tasks
+							.filter((task) => task !== "")
+							.map((task) => {
+								return {
+									name: task,
+								};
+							}),
+					},
+				},
 			},
 		});
 	} catch (error) {
