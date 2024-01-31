@@ -46,7 +46,7 @@ export const FormInput = forwardRef<HTMLInputElement, FormInputProps>(
 		const { pending } = useFormStatus();
 
 		return (
-			<div className="grid grid-cols-4 items-center gap-2">
+			<div className="grid grid-cols-4 items-center gap-4">
 				<div className="grid grid-cols-4 items-center gap-4 col-span-4">
 					{label ? (
 						<Label htmlFor={id} className={cn(labelClassName)}>

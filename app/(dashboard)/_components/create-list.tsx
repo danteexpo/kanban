@@ -33,7 +33,6 @@ const CreateList = ({ listsLength }: CreateListProps) => {
 
 	const { execute, fieldErrors } = useAction(createList, {
 		onSuccess: (data) => {
-			console.log(data);
 			toast({ title: `'${data.title}' successfully created!` });
 		},
 		onError: (error) => {

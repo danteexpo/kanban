@@ -7,6 +7,7 @@ import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import ActionButton from "../action-button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
+import { FormError } from "./form-error";
 
 type FormContentProps = {
 	tasks: string[];
@@ -77,6 +78,11 @@ const FormContent = ({ tasks, setTasks, errors }: FormContentProps) => {
 				</div>
 			))}
 			<div className="grid grid-cols-4 items-center gap-4">
+				<FormError
+					id="tasks"
+					errors={errors}
+					className="col-start-2 col-span-3"
+				/>
 				<Button
 					type="button"
 					onClick={handleAddTask}

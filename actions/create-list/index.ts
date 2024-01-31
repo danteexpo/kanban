@@ -23,20 +23,34 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 	let list;
 
 	try {
+		const lastList = await prisma.list.findFirst({
+			orderBy: {
+				order: "desc",
+			},
+			select: {
+				order: true,
+			},
+		});
+
+		const newOrder = lastList ? lastList.order + 1 : 1;
+
 		list = await prisma.list.create({
 			data: {
 				title,
+				order: newOrder,
 				tasks: {
 					createMany: {
 						data: tasks
 							.filter((task) => task !== "")
-							.map((task) => {
+							.map((task, index) => {
 								return {
 									name: task,
+									order: index,
 								};
 							}),
 					},
 				},
+				authorId: userId,
 			},
 		});
 	} catch (error) {
@@ -45,7 +59,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 		};
 	}
 
-	revalidatePath("");
+	revalidatePath("/");
 	return { data: list };
 };
 
