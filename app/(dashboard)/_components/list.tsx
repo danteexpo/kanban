@@ -8,7 +8,7 @@ import {
 	CardFooter,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Droppable, Draggable } from "@hello-pangea/dnd";
 import Task from "./task";
 import ActionButton from "../../../components/action-button";
@@ -21,6 +21,7 @@ import { FormError } from "@/components/form/form-error";
 import { useAction } from "@/hooks/use-action";
 import { toast } from "@/components/ui/use-toast";
 import { createTask } from "@/actions/create-task";
+import { updateList } from "@/actions/udpate-list";
 
 type ListProps = {
 	list: ListType;
@@ -31,20 +32,43 @@ const List = ({ list }: ListProps) => {
 	const [name, setName] = useState("");
 	const { editListId, setEditListId } = useEditStore();
 
-	const { execute, fieldErrors } = useAction(createTask, {
-		onSuccess: (data) => {
-			toast({ title: "New task successfully created!" });
-			setName("");
-		},
-		onError: (error) => {
-			toast({ title: error });
-		},
-	});
+	const { execute: createTaskExecute, fieldErrors: createTaskErrors } =
+		useAction(createTask, {
+			onSuccess: (data) => {
+				toast({ title: "New task successfully created!" });
+				setName("");
+			},
+			onError: (error) => {
+				toast({ title: error });
+			},
+		});
 
-	const onSubmit = (formData: FormData) => {
+	const createTaskSubmit = (formData: FormData) => {
 		const name = formData.get("name") as string;
-		execute({ name, listId: list.id });
+		createTaskExecute({ name, listId: list.id });
 	};
+
+	const { execute: updateListExecute, fieldErrors: updateListErrors } =
+		useAction(updateList, {
+			onSuccess: (data) => {
+				toast({ title: `'${data.title}' successfully updated!` });
+				setEditListId(null);
+			},
+			onError: (error) => {
+				toast({ title: error });
+			},
+		});
+
+	const updateListSubmit = (formData: FormData) => {
+		const title = formData.get("title") as string;
+		updateListExecute({ title, id: list.id });
+	};
+
+	useEffect(() => {
+		if (updateListErrors?.title) {
+			toast({ title: updateListErrors.title[0] });
+		}
+	}, [updateListErrors]);
 
 	return (
 		<Droppable droppableId={`droppable-list-${list.id}`}>
@@ -58,39 +82,41 @@ const List = ({ list }: ListProps) => {
 						className={cn(
 							"min-w-[240px] max-w-[240px] grid h-min max-h-full",
 							list.tasks.length > 0 &&
-								fieldErrors &&
+								createTaskErrors &&
 								"grid-rows-[68px_1fr_110px]",
 							list.tasks.length > 0 &&
-								!fieldErrors &&
+								!createTaskErrors &&
 								"grid-rows-[68px_1fr_56px]",
-							list.tasks.length < 1 && fieldErrors && "grid-rows-[68px_110px]",
-							list.tasks.length < 1 && !fieldErrors && "grid-rows-[68px_56px]"
+							list.tasks.length < 1 &&
+								createTaskErrors &&
+								"grid-rows-[68px_110px]",
+							list.tasks.length < 1 &&
+								!createTaskErrors &&
+								"grid-rows-[68px_56px]"
 						)}
 					>
 						<CardHeader className="group max-w-[240px] relative space-y-0">
 							{editListId === list.id ? (
-								<>
+								<form action={updateListSubmit}>
 									<Input
+										id="title"
+										name="title"
 										className="min-h-11 pr-16 w-full"
 										value={title}
 										onChange={(e) => setTitle(e.target.value)}
 										autoFocus
 										maxLength={32}
 									/>
-									<ActionButton
-										type="confirm"
-										// onClick={handleUpdate}
-										onClick={() => console.log("handleUpdate")}
-										isBig
-									/>
-								</>
+									<ActionButton type="submit" icon="confirm" isBig />
+								</form>
 							) : (
 								<>
 									<CardTitle className="text-3xl overflow-hidden text-ellipsis whitespace-nowrap">
 										{list.title}
 									</CardTitle>
 									<ActionButton
-										type="edit"
+										type="button"
+										icon="edit"
 										onClick={() => setEditListId(list.id)}
 										isBig
 										changesOpacity
@@ -98,7 +124,8 @@ const List = ({ list }: ListProps) => {
 								</>
 							)}
 							<ActionButton
-								type="delete"
+								type="button"
+								icon="delete"
 								onClick={() => DeleteList(list.id)}
 								isBig
 							/>
@@ -127,7 +154,7 @@ const List = ({ list }: ListProps) => {
 						)}
 						<CardFooter className="pt-0">
 							<form
-								action={onSubmit}
+								action={createTaskSubmit}
 								className="grid grid-cols-[1fr_56px] gap-2 h-min"
 							>
 								<Input
@@ -142,7 +169,7 @@ const List = ({ list }: ListProps) => {
 								<FormSubmit disabled={name === ""}>Add</FormSubmit>
 								<FormError
 									id="name"
-									errors={fieldErrors}
+									errors={createTaskErrors}
 									className="col-span-2"
 								/>
 							</form>

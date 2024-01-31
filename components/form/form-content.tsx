@@ -74,7 +74,11 @@ const FormContent = ({ tasks, setTasks, errors }: FormContentProps) => {
 						maxLength={192}
 						disabled={pending}
 					/>
-					<ActionButton type="delete" onClick={() => handleDeleteTask(index)} />
+					<ActionButton
+						type="button"
+						icon="delete"
+						onClick={() => handleDeleteTask(index)}
+					/>
 				</div>
 			))}
 			<div className="grid grid-cols-4 items-center gap-4">

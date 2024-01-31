@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 import { useFormStatus } from "react-dom";
 
 type ActionButtonProps = {
-	type: "delete" | "edit" | "confirm";
-	onClick: () => void;
-	isSubmit?: boolean;
+	type: "submit" | "button";
+	icon: "delete" | "edit" | "confirm";
+	onClick?: () => void;
 	isDisabled?: boolean;
 	isBig?: boolean;
 	changesOpacity?: boolean;
@@ -16,8 +16,8 @@ type ActionButtonProps = {
 
 const ActionButton = ({
 	type,
+	icon,
 	onClick,
-	isSubmit,
 	isDisabled,
 	isBig,
 	changesOpacity,
@@ -26,13 +26,13 @@ const ActionButton = ({
 
 	return (
 		<Button
-			type={isSubmit ? "submit" : "button"}
+			type={type}
 			className={cn(
 				"absolute h-min top-0 p-1",
-				type === "delete" && "right-0 rounded-tl-none rounded-br-none",
-				type !== "delete" && "rounded-t-none",
-				type !== "delete" && isBig && "right-9",
-				type !== "delete" && !isBig && "right-7",
+				icon === "delete" && "right-0 rounded-tl-none rounded-br-none",
+				icon !== "delete" && "rounded-t-none",
+				icon !== "delete" && isBig && "right-9",
+				icon !== "delete" && !isBig && "right-7",
 				changesOpacity &&
 					"opacity-0 group-hover:opacity-100 transition-opacity duration-300"
 			)}
@@ -40,8 +40,8 @@ const ActionButton = ({
 			disabled={isDisabled || pending}
 		>
 			<Image
-				src={`/static/${type}.svg`}
-				alt={type}
+				src={`/static/${icon}.svg`}
+				alt={icon}
 				width={isBig ? 24 : 16}
 				height={isBig ? 24 : 16}
 				className="invert dark:invert-0"

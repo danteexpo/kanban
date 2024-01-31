@@ -26,27 +26,20 @@ const Task = ({ task }: TaskProps) => {
 							autoFocus
 							maxLength={192}
 						/>
-						<ActionButton
-							type="confirm"
-							// onClick={handleUpdate}
-							onClick={() => console.log("handleUpdate")}
-						/>
+						<ActionButton type="submit" icon="confirm" />
 					</>
 				) : (
 					<>
 						<p className="break-words p-2 pr-6">{task.name}</p>
 						<ActionButton
-							type="edit"
+							type="button"
+							icon="edit"
 							onClick={() => setEditTaskId(task.id)}
 							changesOpacity
 						/>
 					</>
 				)}
-				<ActionButton
-					type="delete"
-					// onClick={() => handleDelete(listId, task.id)}
-					onClick={() => console.log("handleDelete")}
-				/>
+				<ActionButton type="button" icon="delete" />
 			</CardContent>
 		</Card>
 	);
