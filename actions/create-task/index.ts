@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { createSafeAction } from "@/lib/create-safe-action";
 
 import { InputType, ReturnType } from "./types";
-import { CreateList } from "./schema";
+import { CreateTask } from "./schema";
 
 const handler = async (data: InputType): Promise<ReturnType> => {
 	const { userId } = auth();
@@ -18,35 +18,24 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 		};
 	}
 
-	const { title, tasks } = data;
+	const { name, listId } = data;
 
-	let list;
+	let task;
 
 	try {
-		const lastList = await prisma.list.findFirst({
+		const lastTask = await prisma.task.findFirst({
+			where: { listId },
 			orderBy: { order: "desc" },
 			select: { order: true },
 		});
 
-		const newOrder = lastList ? lastList.order + 1 : 1;
+		const newOrder = lastTask ? lastTask.order + 1 : 1;
 
-		list = await prisma.list.create({
+		task = await prisma.task.create({
 			data: {
-				title,
+				name,
 				order: newOrder,
-				tasks: {
-					createMany: {
-						data: tasks
-							.filter((task) => task !== "")
-							.map((task, index) => {
-								return {
-									name: task,
-									order: index,
-								};
-							}),
-					},
-				},
-				authorId: userId,
+				listId,
 			},
 		});
 	} catch (error) {
@@ -56,7 +45,7 @@ const handler = async (data: InputType): Promise<ReturnType> => {
 	}
 
 	revalidatePath("/");
-	return { data: list };
+	return { data: task };
 };
 
-export const createList = createSafeAction(CreateList, handler);
+export const createTask = createSafeAction(CreateTask, handler);

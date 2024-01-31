@@ -9,12 +9,19 @@ import {
 	DropResult,
 } from "@hello-pangea/dnd";
 import CreateList from "./create-list";
+import { useEffect, useState } from "react";
 
 type ListsProps = {
 	lists: ListType[];
 };
 
 const Lists = ({ lists }: ListsProps) => {
+	const [orderedLists, setOrderedLists] = useState(lists);
+
+	useEffect(() => {
+		setOrderedLists(lists);
+	}, [lists]);
+
 	// const handleDragDrop = (result: DropResult) => {
 	// 	const { source, destination, type } = result;
 
@@ -89,7 +96,7 @@ const Lists = ({ lists }: ListsProps) => {
 							{...provided.droppableProps}
 						>
 							<>
-								{lists.map((list, index) => (
+								{orderedLists.map((list, index) => (
 									<Draggable
 										draggableId={`draggable-list-${list.id}`}
 										index={index}

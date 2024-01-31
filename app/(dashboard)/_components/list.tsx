@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardHeader,
@@ -17,6 +16,11 @@ import useEditStore from "@/stores/useEditStore";
 import { cn } from "@/lib/utils";
 import { ListType } from "@/types/types";
 import { DeleteList } from "@/actions/delete-list";
+import FormSubmit from "@/components/form/form-submit";
+import { FormError } from "@/components/form/form-error";
+import { useAction } from "@/hooks/use-action";
+import { toast } from "@/components/ui/use-toast";
+import { createTask } from "@/actions/create-task";
 
 type ListProps = {
 	list: ListType;
@@ -24,8 +28,23 @@ type ListProps = {
 
 const List = ({ list }: ListProps) => {
 	const [title, setTitle] = useState(list.title);
-	const [newTask, setNewTask] = useState("");
+	const [name, setName] = useState("");
 	const { editListId, setEditListId } = useEditStore();
+
+	const { execute, fieldErrors } = useAction(createTask, {
+		onSuccess: (data) => {
+			toast({ title: "New task successfully created!" });
+			setName("");
+		},
+		onError: (error) => {
+			toast({ title: error });
+		},
+	});
+
+	const onSubmit = (formData: FormData) => {
+		const name = formData.get("name") as string;
+		execute({ name, listId: list.id });
+	};
 
 	return (
 		<Droppable droppableId={`droppable-list-${list.id}`}>
@@ -38,9 +57,14 @@ const List = ({ list }: ListProps) => {
 					<Card
 						className={cn(
 							"min-w-[240px] max-w-[240px] grid h-min max-h-full",
-							list.tasks.length > 0
-								? "grid-rows-[68px_1fr_56px]"
-								: "grid-rows-[68px_56px] "
+							list.tasks.length > 0 &&
+								fieldErrors &&
+								"grid-rows-[68px_1fr_110px]",
+							list.tasks.length > 0 &&
+								!fieldErrors &&
+								"grid-rows-[68px_1fr_56px]",
+							list.tasks.length < 1 && fieldErrors && "grid-rows-[68px_110px]",
+							list.tasks.length < 1 && !fieldErrors && "grid-rows-[68px_56px]"
 						)}
 					>
 						<CardHeader className="group max-w-[240px] relative space-y-0">
@@ -101,21 +125,27 @@ const List = ({ list }: ListProps) => {
 								{provided.placeholder}
 							</CardContent>
 						)}
-						<CardFooter className="flex gap-2 pt-0 h-min">
-							<Input
-								type="text"
-								placeholder="New task..."
-								value={newTask}
-								onChange={(e) => setNewTask(e.target.value)}
-								maxLength={192}
-								disabled={list.tasks.length > 9}
-							/>
-							<Button
-								onClick={() => console.log("handleCreate")}
-								disabled={newTask === ""}
+						<CardFooter className="pt-0">
+							<form
+								action={onSubmit}
+								className="grid grid-cols-[1fr_56px] gap-2 h-min"
 							>
-								Add
-							</Button>
+								<Input
+									id="name"
+									name="name"
+									placeholder="Name..."
+									value={name}
+									onChange={(e) => setName(e.target.value)}
+									maxLength={192}
+									disabled={list.tasks.length > 9}
+								/>
+								<FormSubmit disabled={name === ""}>Add</FormSubmit>
+								<FormError
+									id="name"
+									errors={fieldErrors}
+									className="col-span-2"
+								/>
+							</form>
 						</CardFooter>
 					</Card>
 				</div>
