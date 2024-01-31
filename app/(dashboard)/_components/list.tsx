@@ -34,7 +34,7 @@ const List = ({ list }: ListProps) => {
 
 	const { execute: createTaskExecute, fieldErrors: createTaskErrors } =
 		useAction(createTask, {
-			onSuccess: (data) => {
+			onSuccess: () => {
 				toast({ title: "New task successfully created!" });
 				setName("");
 			},
