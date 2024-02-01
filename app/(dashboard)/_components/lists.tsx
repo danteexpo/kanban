@@ -10,79 +10,101 @@ import {
 } from "@hello-pangea/dnd";
 import CreateList from "./create-list";
 import { useEffect, useState } from "react";
+import { useAction } from "@/hooks/use-action";
+import { toast } from "@/components/ui/use-toast";
+import { updateListOrder } from "@/actions/update-list-order";
 
 type ListsProps = {
 	lists: ListType[];
 };
 
-const Lists = ({ lists }: ListsProps) => {
-	const [orderedLists, setOrderedLists] = useState(lists);
+const Lists = ({ lists: initialLists }: ListsProps) => {
+	const [lists, setLists] = useState(initialLists);
 
 	useEffect(() => {
-		setOrderedLists(lists);
+		setLists(lists);
 	}, [lists]);
 
-	// const handleDragDrop = (result: DropResult) => {
-	// 	const { source, destination, type } = result;
+	const { execute: updateListOrderExecute } = useAction(updateListOrder, {
+		onError: (error) => {
+			toast({ title: error });
+		},
+	});
 
-	// 	if (!destination) return;
+	const handleDragDrop = (result: DropResult) => {
+		const { destination, source, type } = result;
 
-	// 	if (
-	// 		source.droppableId === destination.droppableId &&
-	// 		source.index === destination.index
-	// 	)
-	// 		return;
+		if (!destination) return;
 
-	// 	if (type === "group") {
-	// 		const orderedLists = [...lists];
+		if (
+			source.droppableId === destination.droppableId &&
+			source.index === destination.index
+		)
+			return;
 
-	// 		const [removedList] = orderedLists.splice(source.index, 1);
+		if (type === "group") {
+			let orderedLists = [...lists];
 
-	// 		orderedLists.splice(destination.index, 0, removedList);
+			const [removedList] = orderedLists.splice(source.index, 1);
 
-	// 		api
-	// 			.updateAll(orderedLists)
-	// 			.then((updatedLists) => setLists([...updatedLists]));
-	// 	} else {
-	// 		const listSourceIndex = lists.findIndex(
-	// 			(list) => `droppable-list-${list.id}` === source.droppableId
-	// 		);
+			orderedLists.splice(destination.index, 0, removedList);
 
-	// 		const listDestinationIndex = lists.findIndex(
-	// 			(list) => `droppable-list-${list.id}` === destination.droppableId
-	// 		);
+			orderedLists = orderedLists.map((item, index) => ({
+				...item,
+				order: index,
+			}));
 
-	// 		const newSourceTasks = [...lists[listSourceIndex].tasks];
+			setLists(orderedLists);
+			updateListOrderExecute({ lists: orderedLists });
+		} else {
+			const listSourceIndex = lists.findIndex(
+				(list) => `droppable-list-${list.id}` === source.droppableId
+			);
 
-	// 		const newDestinationTasks =
-	// 			source.droppableId !== destination.droppableId
-	// 				? [...lists[listDestinationIndex].tasks]
-	// 				: newSourceTasks;
+			const listDestinationIndex = lists.findIndex(
+				(list) => `droppable-list-${list.id}` === destination.droppableId
+			);
 
-	// 		const [deletedTask] = newSourceTasks.splice(source.index, 1);
+			const newSourceTasks = [...lists[listSourceIndex].tasks];
 
-	// 		newDestinationTasks.splice(destination.index, 0, deletedTask);
+			const newDestinationTasks =
+				source.droppableId !== destination.droppableId
+					? [...lists[listDestinationIndex].tasks]
+					: newSourceTasks;
 
-	// 		const newLists = [...lists];
+			const [deletedTask] = newSourceTasks.splice(source.index, 1);
 
-	// 		newLists[listSourceIndex] = {
-	// 			...lists[listSourceIndex],
-	// 			tasks: newSourceTasks,
-	// 		};
+			newDestinationTasks.splice(destination.index, 0, deletedTask);
 
-	// 		newLists[listDestinationIndex] = {
-	// 			...lists[listDestinationIndex],
-	// 			tasks: newDestinationTasks,
-	// 		};
+			let newLists = [...lists];
 
-	// 		api
-	// 			.updateAll(newLists)
-	// 			.then((updatedLists) => setLists([...updatedLists]));
-	// 	}
-	// };
+			newLists[listSourceIndex] = {
+				...lists[listSourceIndex],
+				tasks: newSourceTasks.map((task, index) => {
+					return {
+						...task,
+						order: index,
+					};
+				}),
+			};
+
+			newLists[listDestinationIndex] = {
+				...lists[listDestinationIndex],
+				tasks: newDestinationTasks.map((task, index) => {
+					return {
+						...task,
+						order: index,
+					};
+				}),
+			};
+
+			setLists(newLists);
+			// Implement update-task-order
+		}
+	};
 
 	return (
-		<DragDropContext onDragEnd={(result: DropResult) => console.log(result)}>
+		<DragDropContext onDragEnd={handleDragDrop}>
 			<Droppable
 				droppableId="droppable-lists"
 				type="group"
@@ -96,7 +118,7 @@ const Lists = ({ lists }: ListsProps) => {
 							{...provided.droppableProps}
 						>
 							<>
-								{orderedLists.map((list, index) => (
+								{lists.map((list, index) => (
 									<Draggable
 										draggableId={`draggable-list-${list.id}`}
 										index={index}
