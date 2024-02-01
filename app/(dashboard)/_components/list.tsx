@@ -15,13 +15,13 @@ import ActionButton from "../../../components/action-button";
 import useEditStore from "@/stores/useEditStore";
 import { cn } from "@/lib/utils";
 import { ListType } from "@/types/types";
-import { DeleteList } from "@/actions/delete-list";
 import FormSubmit from "@/components/form/form-submit";
 import { FormError } from "@/components/form/form-error";
 import { useAction } from "@/hooks/use-action";
 import { toast } from "@/components/ui/use-toast";
 import { createTask } from "@/actions/create-task";
 import { updateList } from "@/actions/udpate-list";
+import { deleteList } from "@/actions/delete-list";
 
 type ListProps = {
 	list: ListType;
@@ -70,6 +70,20 @@ const List = ({ list }: ListProps) => {
 		}
 	}, [updateListErrors]);
 
+	const { execute: deleteListExecute } = useAction(deleteList, {
+		onSuccess: (data) => {
+			toast({ title: `'${data.title}' successfully deleted.` });
+		},
+		onError: (error) => {
+			toast({ title: error });
+		},
+	});
+
+	const deleteListSubmit = (formData: FormData) => {
+		const id = formData.get("id") as string;
+		deleteListExecute({ id: Number(id) });
+	};
+
 	return (
 		<Droppable droppableId={`droppable-list-${list.id}`}>
 			{(provided) => (
@@ -117,18 +131,15 @@ const List = ({ list }: ListProps) => {
 									<ActionButton
 										type="button"
 										icon="edit"
-										onClick={() => setEditListId(list.id)}
 										isBig
 										changesOpacity
 									/>
 								</>
 							)}
-							<ActionButton
-								type="button"
-								icon="delete"
-								onClick={() => DeleteList(list.id)}
-								isBig
-							/>
+							<form action={deleteListSubmit}>
+								<input hidden readOnly name="id" id="id" value={list.id} />
+								<ActionButton type="submit" icon="delete" isBig />
+							</form>
 						</CardHeader>
 						{list.tasks.length > 0 && (
 							<CardContent className="flex flex-col gap-2 overflow-y-auto">
