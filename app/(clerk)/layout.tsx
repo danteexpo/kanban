@@ -15,7 +15,7 @@ export default function ClerkLayout({
 				fontInter.variable
 			)}
 		>
-			{children}
+			<div className="absolute">{children}</div>
 		</div>
 	);
 }
