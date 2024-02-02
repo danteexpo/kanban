@@ -13,10 +13,19 @@ import { useEffect, useState } from "react";
 import { useAction } from "@/hooks/use-action";
 import { toast } from "@/components/ui/use-toast";
 import { updateListOrder } from "@/actions/update-list-order";
+import { updateTaskOrder } from "@/actions/update-task-order";
 
 type ListsProps = {
 	lists: ListType[];
 };
+
+function reorder<T>(list: T[], startIndex: number, endIndex: number) {
+	const result = Array.from(list);
+	const [removed] = result.splice(startIndex, 1);
+	result.splice(endIndex, 0, removed);
+
+	return result;
+}
 
 const Lists = ({ lists: initialLists }: ListsProps) => {
 	const [lists, setLists] = useState(initialLists);
@@ -31,75 +40,93 @@ const Lists = ({ lists: initialLists }: ListsProps) => {
 		},
 	});
 
+	const { execute: updateTaskOrderExecute } = useAction(updateTaskOrder, {
+		onError: (error) => {
+			toast({ title: error });
+		},
+	});
+
 	const handleDragDrop = (result: DropResult) => {
 		const { destination, source, type } = result;
 
-		if (!destination) return;
-
-		if (
-			source.droppableId === destination.droppableId &&
-			source.index === destination.index
-		)
+		if (!destination) {
 			return;
+		}
 
+		// if dropped in the same position
+		if (
+			destination.droppableId === source.droppableId &&
+			destination.index === source.index
+		) {
+			return;
+		}
+
+		// User moves a list
 		if (type === "group") {
-			let orderedLists = [...lists];
-
-			const [removedList] = orderedLists.splice(source.index, 1);
-
-			orderedLists.splice(destination.index, 0, removedList);
-
-			orderedLists = orderedLists.map((item, index) => ({
-				...item,
-				order: index,
-			}));
+			const orderedLists = reorder(lists, source.index, destination.index).map(
+				(item, index) => ({ ...item, order: index })
+			);
 
 			setLists(orderedLists);
 			updateListOrderExecute({ lists: orderedLists });
-		} else {
-			const listSourceIndex = lists.findIndex(
+		}
+		// User moves a task
+		else {
+			let newOrderedLists = [...lists];
+			// Source and destination list
+			const sourceList = newOrderedLists.find(
 				(list) => `droppable-list-${list.id}` === source.droppableId
 			);
-
-			const listDestinationIndex = lists.findIndex(
+			const destList = newOrderedLists.find(
 				(list) => `droppable-list-${list.id}` === destination.droppableId
 			);
-
-			const newSourceTasks = [...lists[listSourceIndex].tasks];
-
-			const newDestinationTasks =
-				source.droppableId !== destination.droppableId
-					? [...lists[listDestinationIndex].tasks]
-					: newSourceTasks;
-
-			const [deletedTask] = newSourceTasks.splice(source.index, 1);
-
-			newDestinationTasks.splice(destination.index, 0, deletedTask);
-
-			let newLists = [...lists];
-
-			newLists[listSourceIndex] = {
-				...lists[listSourceIndex],
-				tasks: newSourceTasks.map((task, index) => {
-					return {
-						...task,
-						order: index,
-					};
-				}),
-			};
-
-			newLists[listDestinationIndex] = {
-				...lists[listDestinationIndex],
-				tasks: newDestinationTasks.map((task, index) => {
-					return {
-						...task,
-						order: index,
-					};
-				}),
-			};
-
-			setLists(newLists);
-			// Implement update-task-order
+			if (!sourceList || !destList) {
+				return;
+			}
+			// Check if tasks exists on the sourceList
+			if (!sourceList.tasks) {
+				sourceList.tasks = [];
+			}
+			// Check if tasks exists on the destList
+			if (!destList.tasks) {
+				destList.tasks = [];
+			}
+			// Moving the task in the same list
+			if (source.droppableId === destination.droppableId) {
+				const reorderedTasks = reorder(
+					sourceList.tasks,
+					source.index,
+					destination.index
+				);
+				reorderedTasks.forEach((task, idx) => {
+					task.order = idx;
+				});
+				sourceList.tasks = reorderedTasks;
+				setLists(newOrderedLists);
+				updateTaskOrderExecute({
+					tasks: reorderedTasks,
+				});
+			}
+			// User moves the task to another list
+			else {
+				// Remove task from the source list
+				const [movedTask] = sourceList.tasks.splice(source.index, 1);
+				// Assign the new listId to the moved task
+				movedTask.listId = Number(destination.droppableId.split("-")[2]);
+				// Add task to the destination list
+				destList.tasks.splice(destination.index, 0, movedTask);
+				sourceList.tasks.forEach((task, idx) => {
+					task.order = idx;
+				});
+				// Update the order for each task in the destination list
+				destList.tasks.forEach((task, idx) => {
+					task.order = idx;
+				});
+				setLists(newOrderedLists);
+				updateTaskOrderExecute({
+					tasks: destList.tasks,
+				});
+			}
 		}
 	};
 
