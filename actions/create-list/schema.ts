@@ -8,6 +8,9 @@ export const CreateList = z.object({
 		})
 		.min(3, {
 			message: "Title is too short.",
+		})
+		.max(32, {
+			message: "Title is too large.",
 		}),
 	tasks: z.array(z.string()).max(10, {
 		message: "Maximum of 10 tasks.",

@@ -8,6 +8,9 @@ export const UpdateList = z.object({
 		})
 		.min(3, {
 			message: "Title is too short.",
+		})
+		.max(32, {
+			message: "Title is too large.",
 		}),
 	id: z.number(),
 });

@@ -131,6 +131,7 @@ const List = ({ list }: ListProps) => {
 									<ActionButton
 										type="button"
 										icon="edit"
+										onClick={() => setEditListId(list.id)}
 										isBig
 										changesOpacity
 									/>

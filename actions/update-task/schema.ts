@@ -8,6 +8,9 @@ export const UpdateTask = z.object({
 		})
 		.min(1, {
 			message: "Name is too short.",
+		})
+		.max(192, {
+			message: "Name is too large.",
 		}),
 	id: z.number(),
 });
