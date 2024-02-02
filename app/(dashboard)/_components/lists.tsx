@@ -31,8 +31,8 @@ const Lists = ({ lists: initialLists }: ListsProps) => {
 	const [lists, setLists] = useState(initialLists);
 
 	useEffect(() => {
-		setLists(lists);
-	}, [lists]);
+		setLists(initialLists);
+	}, [initialLists]);
 
 	const { execute: updateListOrderExecute } = useAction(updateListOrder, {
 		onError: (error) => {
