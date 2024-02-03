@@ -1,7 +1,7 @@
 import SkeletonList from "@/components/skeleton-list";
 import { Suspense } from "react";
 
-export default function RootLayout({
+export default function DashboardLayout({
 	children,
 }: {
 	children: React.ReactNode;
